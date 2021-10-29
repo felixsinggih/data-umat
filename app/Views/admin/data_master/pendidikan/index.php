@@ -21,6 +21,7 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <p class="lead">Menampilkan halaman <?= $pager->getCurrentPage('pendidikan') ?> dari <?= $pager->getPageCount('pendidikan') ?></p>
         </div>
         <!-- /.card-body -->
         <div class="card-footer pb-0">

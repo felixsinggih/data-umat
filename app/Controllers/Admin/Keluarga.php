@@ -9,11 +9,14 @@ use App\Controllers\Admin\Pekerjaan;
 use App\Controllers\BaseController;
 
 use App\Models\KeluargaModel;
+use App\Models\LingkunganModel;
 use App\Models\AnggotaModel;
 use App\Models\DetailPernikahanModel;
 use App\Models\DetailPendidikanModel;
 use App\Models\DetailPekerjaanModel;
 use App\Models\DetailSekolahModel;
+
+use Dompdf\Dompdf;
 
 class Keluarga extends BaseController
 {
@@ -23,6 +26,7 @@ class Keluarga extends BaseController
         $this->pendidikan = new Pendidikan();
         $this->pekerjaan = new Pekerjaan();
         $this->keluargaModel = new KeluargaModel();
+        $this->lingkunganModel = new LingkunganModel();
         $this->anggotaModel = new AnggotaModel();
         $this->detPernikahanModel = new DetailPernikahanModel();
         $this->detPendidikanModel = new DetailPendidikanModel();
@@ -32,13 +36,62 @@ class Keluarga extends BaseController
 
     public function index()
     {
+        $currentpage = $this->request->getVar('page_keluarga') ? $this->request->getVar('page_keluarga') : 1;
+        $keyword = $this->request->getVar('keyword');
+        $keluarga = $this->keluargaModel->viewAll($keyword);
 
         $data = [
-            'title' => 'Keluarga',
-            'validation' => \Config\Services::validation(),
+            'title' => 'Data Keluarga',
             'act'   => ['keluarga', ''],
+            'keyword' => $keyword,
+            'keluarga' => $keluarga->paginate(25, 'keluarga'),
+            'pager' => $this->keluargaModel->pager,
+            'currentPage' => $currentpage
         ];
         return view('admin/keluarga/index', $data);
+    }
+
+    public function detail($idKeluarga = false)
+    {
+
+        $keluarga = $this->keluargaModel->find($idKeluarga);
+        if (empty($keluarga)) {
+            session()->setflashdata('failed', 'Data tidak ditemukan.');
+            return redirect()->to('/admin/keluarga');
+        }
+
+        $data = [
+            'title' => 'Data Keluarga',
+            'keluarga' => $keluarga,
+            'lingkungan' =>  $this->lingkunganModel->find($keluarga['id_lingkungan']),
+            'anggota' => $this->anggotaModel->dataAnggota($idKeluarga)->findAll(),
+            'act'   => ['keluarga', ''],
+        ];
+        return view('admin/keluarga/detail', $data);
+    }
+
+    public function print($idKeluarga = false)
+    {
+        $keluarga = $this->keluargaModel->find($idKeluarga);
+        if (empty($keluarga)) {
+            session()->setflashdata('failed', 'Data tidak ditemukan.');
+            return redirect()->to('/admin/keluarga');
+        }
+
+        $data = [
+            'title'    => "Laporan Barang Masuk ",
+            'keluarga' => $keluarga,
+            'lingkungan' =>  $this->lingkunganModel->find($keluarga['id_lingkungan']),
+            'anggota' => $this->anggotaModel->dataAnggota($idKeluarga)->findAll(),
+        ];
+
+        $fileName = "KartuKeluargaKatolik_" . $keluarga['no_kk'] . ".pdf";
+        $html = view('admin/keluarga/print', $data);
+        $dompdf = new Dompdf();
+        $dompdf->setPaper('legal', 'landscape');
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        $dompdf->stream($fileName);
     }
 
     public function ex()

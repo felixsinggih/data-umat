@@ -31,7 +31,23 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/login', 'Login::index');
+$routes->get('/login', 'Login::index', ['filter' => 'noauth']);
+$routes->post('/signin', 'Login::signin', ['filter' => 'noauth']);
+$routes->get('/signout', 'Login::signout', ['filter' => 'auth']);
+
+$routes->get('/admin', 'Admin\Dashboard::index', ['filter' => 'auth']);
+
+$routes->get('/admin/lingkungan', 'Admin\Lingkungan::index', ['filter' => 'auth']);
+$routes->get('/admin/aktivitas', 'Admin\Aktivitas::index', ['filter' => 'auth']);
+$routes->get('/admin/kategorial', 'Admin\Kategorial::index', ['filter' => 'auth']);
+$routes->get('/admin/pekerjaan', 'Admin\Pekerjaan::index', ['filter' => 'auth']);
+$routes->get('/admin/pendidikan', 'Admin\Pendidikan::index', ['filter' => 'auth']);
+
+$routes->match(['get', 'put'], '/admin/keluarga', 'Admin\Keluarga::index', ['filter' => 'auth']);
+$routes->get('/admin/keluarga/ex', 'Admin\Keluarga::ex', ['filter' => 'auth']);
+$routes->get('/admin/keluarga/export', 'Admin\Keluarga::export', ['filter' => 'auth']);
+$routes->get('/admin/keluarga/(:segment)', 'Admin\Keluarga::detail/$1', ['filter' => 'auth']);
+$routes->get('/admin/keluarga/print/(:segment)', 'Admin\Keluarga::print/$1', ['filter' => 'auth']);
 
 /*
  * --------------------------------------------------------------------

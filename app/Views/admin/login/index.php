@@ -9,11 +9,11 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
     <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
 </head>
 
 <body class="hold-transition login-page">
@@ -34,7 +34,7 @@
                     <?php endif; ?>
                 </div>
 
-                <form action="/login/signin" method="post">
+                <form action="/signin" method="post">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" name="username" placeholder="Usename">
                         <div class="input-group-append">
@@ -76,11 +76,11 @@
     <!-- /.login-box -->
 
     <!-- jQuery -->
-    <script src="/admin/plugins/jquery/jquery.min.js"></script>
+    <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="/admin/dist/js/adminlte.min.js"></script>
+    <script src="/adminlte/dist/js/adminlte.min.js"></script>
 </body>
 
 </html>

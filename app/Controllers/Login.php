@@ -29,9 +29,10 @@ class Login extends BaseController
                 if ($userData['status'] == "Aktif") {
                     $this->session->set('uid', $userData['uid']);
                     $this->session->set('name', $userData['name']);
+                    $this->session->set('isAdmin', true);
 
                     session()->setflashdata('success', 'Selamat Datang, ' . session()->get('name'));
-                    return redirect()->to('/admin/dashboard')->withInput();
+                    return redirect()->to('/admin')->withInput();
                 } else {
                     session()->setflashdata('failed', 'Maaf, Status anda sudah Tidak Aktif');
                     return redirect()->to('/login');
@@ -44,5 +45,13 @@ class Login extends BaseController
             session()->setflashdata('failed', 'Oopss.. Data tidak ditemukan!');
             return redirect()->to('/login');
         }
+    }
+
+    public function signout()
+    {
+        session()->remove('uid');
+        session()->remove('name');
+        session()->remove('isAdmin');
+        return redirect()->to(base_url('login'));
     }
 }

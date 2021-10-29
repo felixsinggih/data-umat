@@ -9,17 +9,25 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="/admin/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
     <!-- DataTables -->
-    <link rel="stylesheet" href="<?= base_url() ?>/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css"> -->
+
+    <style>
+        .lead {
+            font-size: 1rem;
+            font-style: italic;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 
-<body class="hold-transition sidebar-mini layout-navbar-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
@@ -62,15 +70,18 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="../../index3.html" class="brand-link">
-                <img src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <a href="/admin" class="brand-link">
+                <img src="/adminlte/dist/img/AdminLTELogo.png" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">Logo</span>
             </a>
 
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user  -->
                 <?= $this->include('admin/layout/user') ?>
+
+                <!-- SidebarSearch Form -->
+                <?= $this->include('admin/layout/sidebar_search') ?>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -129,18 +140,18 @@
     <!-- ./wrapper -->
 
     <!-- jQuery -->
-    <script src="/admin/plugins/jquery/jquery.min.js"></script>
+    <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="/admin/dist/js/adminlte.min.js"></script>
+    <script src="/adminlte/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="/admin/dist/js/demo.js"></script>
+    <script src="/adminlte/dist/js/demo.js"></script>
     <!-- DataTables -->
-    <script src="<?= base_url() ?>/admin/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?= base_url() ?>/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="<?= base_url() ?>/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="<?= base_url() ?>/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="<?= base_url() ?>/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= base_url() ?>/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="<?= base_url() ?>/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="<?= base_url() ?>/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script> -->
 
