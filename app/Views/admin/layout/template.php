@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | <?= $title ?></title>
+    <title>NamaWeb | <?= $title ?></title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -15,7 +15,10 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="<?= base_url() ?>/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-
+    <!-- DatePicker -->
+    <!-- <script src="/datepicker/js/jquery-1.10.2.js"></script>
+    <link href="/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" media="screen">
+    <link href="/datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen"> -->
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css"> -->
 
     <style>
@@ -31,40 +34,7 @@
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <?= $this->include('admin/layout/navbar') ?>
-
-            <!-- Right navbar links -->
-            <!-- <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Notifications</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                    </div>
-                </li>
-            </ul> -->
-        </nav>
+        <?= $this->include('admin/layout/navbar') ?>
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
@@ -108,17 +78,19 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <div class="col-12 col-sm-12 col-md-12">
-                        <?php if (session()->getflashdata('success')) : ?>
-                            <div class="alert alert-success" role="alert">
-                                <?= session()->getflashdata('success'); ?>
-                            </div>
-                        <?php endif; ?>
-                        <?php if (session()->getflashdata('failed')) : ?>
-                            <div class="alert alert-danger" role="alert">
-                                <?= session()->getflashdata('failed'); ?>
-                            </div>
-                        <?php endif; ?>
+                    <div class="row">
+                        <div class="col-12">
+                            <?php if (session()->getflashdata('success')) : ?>
+                                <div class="alert alert-success" role="alert">
+                                    <?= session()->getflashdata('success'); ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (session()->getflashdata('failed')) : ?>
+                                <div class="alert alert-danger" role="alert">
+                                    <?= session()->getflashdata('failed'); ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
 
                     <!-- Content -->
@@ -133,7 +105,7 @@
             <div class="float-right d-none d-sm-block">
                 <b>Version</b> 3.1.0
             </div>
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+            <strong>Copyright &copy; 2021 <a href="/">NamaWeb</a>.</strong> All rights reserved.
         </footer>
 
     </div>

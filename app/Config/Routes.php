@@ -49,6 +49,8 @@ $routes->get('/admin/keluarga/export', 'Admin\Keluarga::export', ['filter' => 'a
 $routes->get('/admin/keluarga/(:segment)', 'Admin\Keluarga::detail/$1', ['filter' => 'auth']);
 $routes->get('/admin/keluarga/print/(:segment)', 'Admin\Keluarga::print/$1', ['filter' => 'auth']);
 
+$routes->get('/admin/demografi', 'Admin\Demografi::index', ['filter' => 'auth']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

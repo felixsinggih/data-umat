@@ -46,4 +46,11 @@ class AnggotaModel extends Model
             ->join('dsc_pekerjaan as pek', 'pek.id_pekerjaan = dpek.id_pekerjaan', 'left')
             ->where('dsc_anggota_keluarga.id_keluarga', $idKeluarga);
     }
+
+    public function hitungUmurUmat($operatorMin, $umurMin, $operatorMax, $umurMax)
+    {
+        return $this->select('count(timestampdiff(year, tgl_lahir, curdate())) as jumlah')
+            ->where('timestampdiff(year, tgl_lahir, curdate()) ' . $operatorMin, $umurMin)
+            ->where('timestampdiff(year, tgl_lahir, curdate()) ' . $operatorMax, $umurMax);
+    }
 }

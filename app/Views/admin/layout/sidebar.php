@@ -1,4 +1,4 @@
-<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+<ul class="nav nav-legacy nav-child-indent nav-collapse-hide-child nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
     <li class="nav-header">MENU</li>
     <li class="nav-item">
         <a href="/admin" class="nav-link<?= ($act[0] == 'dashboard') ? ' active' : ''; ?>">
@@ -64,8 +64,16 @@
         </a>
     </li>
     <li class="nav-item">
+        <a href="/admin/demografi" class="nav-link<?= ($act[0] == 'demografi') ? ' active' : ''; ?>">
+            <i class="nav-icon fas fa-chart-bar"></i>
+            <p>
+                Demografi Umat
+            </p>
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="/signout" class="nav-link">
-            <i class="nav-icon fas fa-power-off"></i>
+            <i class="nav-icon fas fa-sign-out-alt"></i>
             <p>
                 Log Out
             </p>
