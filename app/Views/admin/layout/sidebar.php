@@ -55,13 +55,28 @@
             </li>
         </ul>
     </li>
-    <li class="nav-item">
-        <a href="/admin/keluarga" class="nav-link<?= ($act[0] == 'keluarga') ? ' active' : ''; ?>">
-            <i class="nav-icon fas fa-church"></i>
-            <p>
-                Data Keluarga
-            </p>
+    <li class="nav-item has-treeview<?= ($act[0] == 'keluarga') ? ' menu-open' : ''; ?>">
+        <a href="#" class="nav-link<?= ($act[0] == 'keluarga') ? ' active' : ''; ?>">
+            <i class="nav-icon fas fa-users"></i>
+            <p>Keluarga Katolik</p>
+            <i class="right fas fa-angle-left"></i>
         </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="/admin/keluarga/add" class="nav-link<?= ($act[1] == 'tambah') ? ' active' : ''; ?>">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Tambah Data</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="/admin/keluarga" class="nav-link<?= ($act[1] == 'lihat') ? ' active' : ''; ?>">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Data Keluarga</p>
+                </a>
+            </li>
+        </ul>
     </li>
     <li class="nav-item">
         <a href="/admin/demografi" class="nav-link<?= ($act[0] == 'demografi') ? ' active' : ''; ?>">

@@ -3,12 +3,12 @@
 
 <row>
     <div class="card">
-        <div class="card-body">
+        <div class="card-body pb-0">
             <div class="form-group">
                 <form action="/admin/keluarga" method="post">
                     <?= csrf_field(); ?>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Pencarian berdasarkan NO KK / NIK Kepala Keluarga / Nama Kepala Keluarga" name="keyword" value="<?= $keyword; ?>" autocomplete="off">
+                        <input type="te*t" class="form-control" placeholder="Pencarian berdasarkan NO KK / NIK Kepala Keluarga / Nama Kepala Keluarga" name="keyword" value="<?= $keyword; ?>" autocomplete="off">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="submit" name="submit">Cari</button>
                         </div>
@@ -16,6 +16,7 @@
                 </form>
             </div>
             <div class="form-group">
+                <a href="/admin/keluarga/add" class="btn btn-outline-primary"><i class="fas fa-plus"></i> Tambah Data</a>
                 <table id="dataTable1" class="table table-bordered table-hover table-striped">
                     <thead align="center">
                         <tr>

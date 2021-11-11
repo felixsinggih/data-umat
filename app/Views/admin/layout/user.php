@@ -5,7 +5,7 @@
     <div class="info">
         <a href="#" class="d-block">
             <?php $nama = explode(' ', session()->get('name'));
-            echo $nama[0] ?>
+            echo $nama[0] . ' ' . $nama[1] ?>
         </a>
     </div>
 </div>

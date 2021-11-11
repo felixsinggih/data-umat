@@ -2,36 +2,57 @@
 
 namespace app\Controllers\Admin;
 
-use App\Controllers\Admin\Lingkungan;
-use App\Controllers\Admin\Pendidikan;
-use App\Controllers\Admin\Pekerjaan;
-
 use App\Controllers\BaseController;
 
 use App\Models\KeluargaModel;
 use App\Models\LingkunganModel;
 use App\Models\AnggotaModel;
+use App\Models\PendidikanModel;
+use App\Models\PekerjaanModel;
+use App\Models\AktivitasModel;
+use App\Models\KategorialModel;
+
 use App\Models\DetailPernikahanModel;
 use App\Models\DetailPendidikanModel;
 use App\Models\DetailPekerjaanModel;
 use App\Models\DetailSekolahModel;
+use App\Models\DetailAktivitasModel;
+use App\Models\DetailKategorialModel;
 
 use Dompdf\Dompdf;
 
 class Keluarga extends BaseController
 {
+    protected $keluargaModel;
+    protected $lingkunganModel;
+    protected $anggotaModel;
+    protected $pendidikanModel;
+    protected $pekerjaanModel;
+    protected $aktivitasModel;
+    protected $kategorialModel;
+    protected $detPernikahanModel;
+    protected $detPendidikanModel;
+    protected $detPekerjaanModel;
+    protected $detSekolahModel;
+    protected $detAktivitasModel;
+    protected $detKategorialModel;
+
+
     function __construct()
     {
-        $this->lingkungan = new Lingkungan();
-        $this->pendidikan = new Pendidikan();
-        $this->pekerjaan = new Pekerjaan();
         $this->keluargaModel = new KeluargaModel();
         $this->lingkunganModel = new LingkunganModel();
         $this->anggotaModel = new AnggotaModel();
+        $this->pendidikanModel = new PendidikanModel();
+        $this->pekerjaanModel = new PekerjaanModel();
+        $this->aktivitasModel = new AktivitasModel();
+        $this->kategorialModel = new KategorialModel();
         $this->detPernikahanModel = new DetailPernikahanModel();
         $this->detPendidikanModel = new DetailPendidikanModel();
         $this->detPekerjaanModel = new DetailPekerjaanModel();
         $this->detSekolahModel = new DetailSekolahModel();
+        $this->detAktivitasModel = new DetailAktivitasModel();
+        $this->detKategorialModel = new DetailKategorialModel();
     }
 
     public function index()
@@ -41,14 +62,261 @@ class Keluarga extends BaseController
         $keluarga = $this->keluargaModel->viewAll($keyword);
 
         $data = [
-            'title' => 'Data Keluarga',
-            'act'   => ['keluarga', ''],
-            'keyword' => $keyword,
-            'keluarga' => $keluarga->paginate(25, 'keluarga'),
-            'pager' => $this->keluargaModel->pager,
+            'title'     => 'Data Keluarga',
+            'act'       => ['keluarga', 'lihat'],
+            'keyword'   => $keyword,
+            'keluarga'  => $keluarga->paginate(25, 'keluarga'),
+            'pager'     => $this->keluargaModel->pager,
             'currentPage' => $currentpage
         ];
         return view('admin/keluarga/index', $data);
+    }
+
+    public function add()
+    {
+        $data = [
+            'title'     => 'Tambah Data Keluarga',
+            'lingkungan' => $this->lingkunganModel->findAll(),
+            'pendidikan' => $this->pendidikanModel->findAll(),
+            'pekerjaan' => $this->pekerjaanModel->findAll(),
+            'act'       => ['keluarga', 'tambah'],
+            'validation' => \Config\Services::validation(),
+        ];
+        return view('admin/keluarga/add', $data);
+    }
+
+    public function addData()
+    {
+        if (!$this->validate([
+            'id_lingkungan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Lingkungan / Stasi wajib diisi!',
+                ]
+            ],
+            'no_kk' => [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => 'Nomor Kartu Keluarga wajib diisi!',
+                    'numeric' => 'Nomor Kartu Keluarga hanya dapat diisi dengan angka!'
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Alamat wajib diisi!'
+                ]
+            ],
+            'rt_rw' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'RT / RW wajib diisi!'
+                ]
+            ],
+            'kelurahan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Kelurahan wajib diisi!'
+                ]
+            ],
+            'kecamatan' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Kecamatan wajib diisi!'
+                ]
+            ],
+            'nik' => [
+                'rules' => 'required|numeric',
+                'errors' => [
+                    'required' => 'Nomor Induk Kependudukan wajib diisi!',
+                    'numeric' => 'Nomor Induk Kependudukan hanya dapat diisi dengan angka!'
+                ]
+            ],
+            'nama_lengkap' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nama lengkap wajib diisi!'
+                ]
+            ],
+            'jns_kelamin' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Jenis kelamin wajib diisi!'
+                ]
+            ],
+        ])) {
+            return redirect()->to('/admin/keluarga/add')->withInput();
+        }
+
+        $idKeluarga = $this->keluargaModel->kodegenKeluarga($this->request->getVar('id_lingkungan'));
+        $keluarga = [
+            'id_lingkungan' => $this->request->getVar('id_lingkungan'),
+            'id_keluarga'   => $idKeluarga,
+            'no_kk'         => $this->request->getVar('no_kk'),
+            'alamat'        => $this->request->getVar('alamat'),
+            'rt_rw'         => $this->request->getVar('rt_rw'),
+            'kelurahan'     => $this->request->getVar('kelurahan'),
+            'kecamatan'     => $this->request->getVar('kecamatan'),
+        ];
+
+        $idAnggota = $this->anggotaModel->kodegenAnggota($idKeluarga);
+        $anggota = [
+            'id_keluarga'   => $idKeluarga,
+            'id_anggota'    => $idAnggota,
+            'nik'           => $this->request->getVar('nik'),
+            'nama_baptis'   => $this->request->getVar('nama_baptis'),
+            'nama_lengkap'  => $this->request->getVar('nama_lengkap'),
+            'tempat_baptis' => $this->request->getVar('tempat_baptis'),
+            'tgl_baptis'    => ($this->request->getVar('tgl_baptis') != '') ? $this->request->getVar('tgl_baptis') : null,
+            'tempat_krisma' => $this->request->getVar('tempat_krisma'),
+            'tgl_krisma'    => ($this->request->getVar('tgl_krisma') != '') ? $this->request->getVar('tgl_krisma') : null,
+            'jns_kelamin'   => $this->request->getVar('jns_kelamin'),
+            'gol_darah'     => $this->request->getVar('gol_darah'),
+            'tempat_lahir'  => $this->request->getVar('tempat_lahir'),
+            'tgl_lahir'     => ($this->request->getVar('tgl_lahir') != '') ? $this->request->getVar('tgl_lahir') : null,
+            'status_keluarga' => $this->request->getVar('status_keluarga'),
+            'ayah_kandung'  => $this->request->getVar('ayah_kandung'),
+            'ibu_kandung'   => $this->request->getVar('ibu_kandung'),
+            'tempat_tinggal' => $this->request->getVar('tempat_tinggal'),
+            'telp'          => $this->request->getVar('telp'),
+        ];
+
+        $pendidikan = [
+            'id_anggota'    => $idAnggota,
+            'id_pendidikan' => $this->request->getVar('id_pendidikan'),
+        ];
+
+        $pekerjaan = [
+            'id_anggota'    => $idAnggota,
+            'id_pekerjaan'  => $this->request->getVar('id_pekerjaan'),
+        ];
+
+        $pernikahan = [
+            'id_anggota'    => $idAnggota,
+            'tempat_menikah' => ($this->request->getVar('tempat_menikah') != '') ? $this->request->getVar('tempat_menikah') : null,
+            'tgl_menikah'  => ($this->request->getVar('tgl_menikah') != '') ? $this->request->getVar('tgl_menikah') : null,
+        ];
+
+        $this->db->transStart();
+        $this->keluargaModel->insert($keluarga);
+        $this->anggotaModel->insert($anggota);
+
+        if (!empty($pendidikan['id_pendidikan']))
+            $this->detPendidikanModel->insert($pendidikan);
+
+        if (!empty($pekerjaan['id_pekerjaan']))
+            $this->detPekerjaanModel->insert($pekerjaan);
+
+        if (!empty($pernikahan['tempat_menikah']) || !empty($pernikahan['tgl_menikah']))
+            $this->detPernikahanModel->insert($pernikahan);
+        $this->db->transComplete();
+
+        if ($this->db->transStatus() == false) {
+            session()->setflashdata('failed', 'Data keluarga gagal disimpan.');
+            return redirect()->to('/admin/keluarga/add')->withInput();
+        } elseif ($this->db->transStatus() == true) {
+            session()->setflashdata('success', 'Data keluarga berhasil disimpan.');
+            return redirect()->to('/admin/keluarga/' . $idKeluarga);
+        }
+    }
+
+    public function addAnggota($idKeluarga)
+    {
+        $keluarga = $this->keluargaModel->find($idKeluarga);
+        $data = [
+            'title'     => 'Tambah Data Anggota Keluarga',
+            'keluarga'  => $keluarga,
+            'pendidikan' => $this->pendidikanModel->findAll(),
+            'pekerjaan' => $this->pekerjaanModel->findAll(),
+            'act'       => ['keluarga', 'tambah'],
+            'validation' => \Config\Services::validation(),
+        ];
+        return view('admin/keluarga/anggota/add', $data);
+    }
+
+    public function addDataAnggota($idKeluarga)
+    {
+        if (!$this->validate([
+            'nik' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nomor Induk Kependudukan wajib diisi!'
+                ]
+            ],
+            'nama_lengkap' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nama lengkap wajib diisi!'
+                ]
+            ],
+            'jns_kelamin' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Jenis kelamin wajib diisi!'
+                ]
+            ],
+        ])) {
+            return redirect()->to('/keluarga/anggota/add/' . $idKeluarga)->withInput();
+        }
+
+        $idAnggota = $this->anggotaModel->kodegenAnggota($idKeluarga);
+        $anggota = [
+            'id_keluarga'   => $idKeluarga,
+            'id_anggota'    => $idAnggota,
+            'nik'           => $this->request->getVar('nik'),
+            'nama_baptis'   => $this->request->getVar('nama_baptis'),
+            'nama_lengkap'  => $this->request->getVar('nama_lengkap'),
+            'tempat_baptis' => $this->request->getVar('tempat_baptis'),
+            'tgl_baptis'    => ($this->request->getVar('tgl_baptis') != '') ? $this->request->getVar('tgl_baptis') : null,
+            'tempat_krisma' => $this->request->getVar('tempat_krisma'),
+            'tgl_krisma'    => ($this->request->getVar('tgl_krisma') != '') ? $this->request->getVar('tgl_krisma') : null,
+            'jns_kelamin'   => $this->request->getVar('jns_kelamin'),
+            'gol_darah'     => $this->request->getVar('gol_darah'),
+            'tempat_lahir'  => $this->request->getVar('tempat_lahir'),
+            'tgl_lahir'     => ($this->request->getVar('tgl_lahir') != '') ? $this->request->getVar('tgl_lahir') : null,
+            'status_keluarga' => $this->request->getVar('status_keluarga'),
+            'ayah_kandung'  => $this->request->getVar('ayah_kandung'),
+            'ibu_kandung'   => $this->request->getVar('ibu_kandung'),
+            'tempat_tinggal' => $this->request->getVar('tempat_tinggal'),
+            'telp'          => $this->request->getVar('telp'),
+        ];
+
+        $pendidikan = [
+            'id_anggota'    => $idAnggota,
+            'id_pendidikan' => $this->request->getVar('id_pendidikan'),
+        ];
+
+        $pekerjaan = [
+            'id_anggota'    => $idAnggota,
+            'id_pekerjaan'  => $this->request->getVar('id_pekerjaan'),
+        ];
+
+        $pernikahan = [
+            'id_anggota'    => $idAnggota,
+            'tempat_menikah' => ($this->request->getVar('tempat_menikah') != '') ? $this->request->getVar('tempat_menikah') : null,
+            'tgl_menikah'  => ($this->request->getVar('tgl_menikah') != '') ? $this->request->getVar('tgl_menikah') : null,
+        ];
+
+        $this->db->transStart();
+        $this->anggotaModel->insert($anggota);
+
+        if (!empty($pendidikan['id_pendidikan']))
+            $this->detPendidikanModel->insert($pendidikan);
+
+        if (!empty($pekerjaan['id_pekerjaan']))
+            $this->detPekerjaanModel->insert($pekerjaan);
+
+        if (!empty($pernikahan['tempat_menikah']) || !empty($pernikahan['tgl_menikah']))
+            $this->detPernikahanModel->insert($pernikahan);
+        $this->db->transComplete();
+
+        if ($this->db->transStatus() == false) {
+            session()->setflashdata('failed', 'Data keluarga gagal disimpan.');
+            return redirect()->to('/keluarga/anggota/add/' . $idKeluarga)->withInput();
+        } elseif ($this->db->transStatus() == true) {
+            session()->setflashdata('success', 'Data keluarga berhasil disimpan.');
+            return redirect()->to('/admin/keluarga/' . $idKeluarga);
+        }
     }
 
     public function detail($idKeluarga = false)
@@ -61,13 +329,40 @@ class Keluarga extends BaseController
         }
 
         $data = [
-            'title' => 'Data Keluarga',
-            'keluarga' => $keluarga,
+            'title'     => 'Detail Keluarga',
+            'keluarga'  => $keluarga,
             'lingkungan' =>  $this->lingkunganModel->find($keluarga['id_lingkungan']),
-            'anggota' => $this->anggotaModel->dataAnggota($idKeluarga)->findAll(),
-            'act'   => ['keluarga', ''],
+            'anggota'   => $this->anggotaModel->dataAnggota($idKeluarga),
+            'act'       => ['keluarga', 'lihat'],
         ];
         return view('admin/keluarga/detail', $data);
+    }
+
+    public function detailAnggota($idAnggota = false)
+    {
+
+        $anggota = $this->anggotaModel->find($idAnggota);
+        if (empty($anggota)) {
+            session()->setflashdata('failed', 'Data tidak ditemukan.');
+            return redirect()->to('/admin/keluarga');
+        }
+
+        $keluarga = $this->keluargaModel->find($anggota['id_keluarga']);
+
+        $data = [
+            'title'     => 'Detail Anggota Keluarga',
+            'anggota'   => $anggota,
+            'pendidikan' => $this->detPendidikanModel->showPendidikan($anggota['id_anggota']),
+            'pekerjaan' => $this->detPekerjaanModel->showPekerjaan($anggota['id_anggota']),
+            'keluarga'  => $keluarga,
+            'lingkungan' => $this->lingkunganModel->find($keluarga['id_lingkungan']),
+            'pernikahan' => $this->detPernikahanModel->where('id_anggota', $anggota['id_anggota'])->first(),
+            'aktivitas' => $this->detAktivitasModel->showAktivitas($anggota['id_anggota']),
+            'kategorial' => $this->detKategorialModel->showKategorial($anggota['id_anggota']),
+            'sekolah'   => $this->detSekolahModel->where('id_anggota', $anggota['id_anggota'])->first(),
+            'act'       => ['keluarga', 'lihat'],
+        ];
+        return view('admin/keluarga/anggota/detail', $data);
     }
 
     public function print($idKeluarga = false)
@@ -117,13 +412,17 @@ class Keluarga extends BaseController
 
         $spreadsheet = $reader->load($fileExcel);
         $data = $spreadsheet->setActiveSheetIndex(1)->toArray();
+
         $keluraga = array();
         $pendidikan = array();
         $pekerjaan = array();
+        $aktivitas = array();
+        $kategorial = array();
+
         foreach ($data as $idx => $row) :
             if ($idx < 1) continue;
 
-            $idLingkungan = $this->lingkungan->cariLingkungan($row[0]);
+            $idLingkungan = $this->lingkunganModel->cariLingkunganExport($row[0]);
             $idKeluarga = $this->keluargaModel->kodegenKeluarga($idLingkungan);
 
             $keluargaSatuan = [
@@ -134,7 +433,6 @@ class Keluarga extends BaseController
                 'rt_rw' => $row[5],
                 'kelurahan' => $row[6],
                 'kecamatan' => $row[3],
-                // 'nik' => $row[7],
             ];
             array_push($keluraga, $keluargaSatuan);
 
@@ -148,43 +446,44 @@ class Keluarga extends BaseController
         foreach ($data as $idx => $row) :
             if ($idx < 1) continue;
 
-            $idKeluarga = $this->keluargaModel->where('no_kk', $row[0])->first();
-            $idAnggota = $this->anggotaModel->kodegenAnggota($idKeluarga['id_keluarga']);
+            $nik = ($row[3] == null) ? null : $row[3];
+            $nama = ($row[2] == null) ? null : $row[2];
+            if (!empty($nik)) {
+                if (trim($nik) != "-") {
+                    $idKeluarga = $this->keluargaModel->where('no_kk', $row[0])->first();
+                    $idAnggota = $this->anggotaModel->kodegenAnggota($idKeluarga['id_keluarga']);
 
-            $ayahSatuan = [
-                'id_keluarga' => $idKeluarga['id_keluarga'],
-                'id_anggota' => $idAnggota,
-                // 'no_kk' => $row[0],
-                'nik' => ($row[3] == null) ? null : $row[3],
-                'nama_baptis' => ($row[1] == null) ? null : $row[1],
-                'nama_lengkap' => ($row[2] == null) ? null : $row[2],
-                'tempat_baptis' => ($row[4] == null) ? null : $row[4],
-                'tgl_baptis' => ($row[5] == null) ? null : $row[5],
-                'tempat_krisma' => ($row[6] == null) ? null : $row[6],
-                'tgl_krisma' => ($row[7] == null) ? null : $row[7],
-                'jns_kelamin' => ($row[22] == null) ? null : $row[22], // ** tambahan
-                'gol_darah' => ($row[10] == null) ? null : $row[10],
-                'tempat_lahir' => ($row[11] == null) ? null : $row[11],
-                'tgl_lahir' => ($row[12] == null) ? null : $row[12],
-                'status_keluarga' => ($row[23] == null) ? null : $row[23], // ** tambahan
-                'ayah_kandung' => ($row[13] == null) ? null : $row[13],
-                'ibu_kandung' => ($row[14] == null) ? null : $row[14],
-                // 'id_pendidikan' => ($row[15] == null) ? null : $this->pendidikan->cariPendidikan($row[15]),
-                // 'id_pekerjaan' => ($row[16] == null) ? null : $this->pekerjaan->cariPekerjaan($row[16]),
-                'pertanyaan' => ($row[19] == null) ? null : $row[19],
-                'tempat_tinggal' => ($row[20] == null) ? null : $row[20],
-                'telp' => ($row[21] == null) ? null : $row[21],
-            ];
+                    $ayahSatuan = [
+                        'id_keluarga' => $idKeluarga['id_keluarga'],
+                        'id_anggota' => $idAnggota,
+                        'nik' => $nik,
+                        'nama_baptis' => ($row[1] == null) ? null : $row[1],
+                        'nama_lengkap' => ($row[2] == null) ? null : $row[2],
+                        'tempat_baptis' => ($row[4] == null) ? null : $row[4],
+                        'tgl_baptis' => ($row[5] == null) ? null : (($row[5] == '1970/01/01') ? null : $row[5]),
+                        'tempat_krisma' => ($row[6] == null) ? null : $row[6],
+                        'tgl_krisma' => ($row[7] == null) ? null : (($row[7] == '1970/01/01') ? null : $row[7]),
+                        'jns_kelamin' => ($row[22] == null) ? null : $row[22], // ** tambahan
+                        'gol_darah' => ($row[10] == null) ? null : $row[10],
+                        'tempat_lahir' => ($row[11] == null) ? null : (($row[11] == '1970/01/01') ? null : $row[11]),
+                        'tgl_lahir' => ($row[12] == null) ? null : $row[12],
+                        'status_keluarga' => ($row[23] == null) ? null : $row[23], // ** tambahan
+                        'ayah_kandung' => ($row[13] == null) ? null : $row[13],
+                        'ibu_kandung' => ($row[14] == null) ? null : $row[14],
+                        'pertanyaan' => ($row[19] == null) ? null : $row[19],
+                        'tempat_tinggal' => ($row[20] == null) ? null : $row[20],
+                        'telp' => ($row[21] == null) ? null : $row[21],
+                    ];
 
-            if (!empty($ayahSatuan['nik'])) {
-                array_push($ayah, $ayahSatuan);
-                $this->anggotaModel->insert($ayahSatuan);
+                    array_push($ayah, $ayahSatuan);
+                    $this->anggotaModel->insert($ayahSatuan);
+                }
             }
 
             $pernikahanAyah = [
                 'id_anggota' => $idAnggota,
                 'tempat_menikah' => ($row[8] == null) ? null : $row[8],
-                'tgl_menikah' => ($row[9] == null) ? null : $row[9],
+                'tgl_menikah' => ($row[9] == null) ? null : (($row[9] == '1970/01/01') ? null : $row[9]),
             ];
 
             if (!empty($pernikahanAyah['tempat_menikah']) || !empty($pernikahanAyah['tgl_menikah'])) {
@@ -194,15 +493,35 @@ class Keluarga extends BaseController
             if (!empty($row[3]) && !empty($row[15])) {
                 array_push($pendidikan, [
                     'id_anggota' => $idAnggota,
-                    'id_pendidikan' => $this->pendidikan->cariPendidikan($row[15])
+                    'id_pendidikan' => $this->pendidikanModel->cariPendidikanExport($row[15])
                 ]);
             }
 
             if (!empty($row[3]) && !empty($row[16])) {
                 array_push($pekerjaan, [
                     'id_anggota' => $idAnggota,
-                    'id_pekerjaan' => $this->pekerjaan->cariPekerjaan($row[16])
+                    'id_pekerjaan' => $this->pekerjaanModel->cariPekerjaanExport($row[16])
                 ]);
+            }
+
+            if (!empty($row[17])) {
+                $dataAktivitas = explode(',', $row[17]);
+                foreach ($dataAktivitas as $data) :
+                    array_push($aktivitas, [
+                        'id_anggota' => $idAnggota,
+                        'id_aktivitas' => $this->aktivitasModel->cariAktivitasExport(trim($data))
+                    ]);
+                endforeach;
+            }
+
+            if (!empty($row[18])) {
+                $dataKategorial = explode(',', $row[18]);
+                foreach ($dataKategorial as $data) :
+                    array_push($kategorial, [
+                        'id_anggota' => $idAnggota,
+                        'id_kategorial' => $this->kategorialModel->cariKategorialExport(trim($data))
+                    ]);
+                endforeach;
             }
         endforeach;
 
@@ -211,43 +530,43 @@ class Keluarga extends BaseController
         foreach ($data as $idx => $row) :
             if ($idx < 1) continue;
 
-            $idKeluarga = $this->keluargaModel->where('no_kk', $row[0])->first();
-            $idAnggota = $this->anggotaModel->kodegenAnggota($idKeluarga['id_keluarga']);
+            $nik = ($row[3] == null) ? null : $row[3];
+            $nama = ($row[2] == null) ? null : $row[2];
+            if (!empty($nik)) {
+                if (trim($nik) != "-") {
+                    $idKeluarga = $this->keluargaModel->where('no_kk', $row[0])->first();
+                    $idAnggota = $this->anggotaModel->kodegenAnggota($idKeluarga['id_keluarga']);
 
-            $ibuSatuan = [
-                'id_keluarga' => $idKeluarga['id_keluarga'],
-                'id_anggota' => $idAnggota,
-                // 'no_kk' => $row[0],
-                'nik' => ($row[3] == null) ? null : $row[3],
-                'nama_baptis' => ($row[1] == null) ? null : $row[1],
-                'nama_lengkap' => ($row[2] == null) ? null : $row[2],
-                'tempat_baptis' => ($row[4] == null) ? null : $row[4],
-                'tgl_baptis' => ($row[5] == null) ? null : $row[5],
-                'tempat_krisma' => ($row[6] == null) ? null : $row[6],
-                'tgl_krisma' => ($row[7] == null) ? null : $row[7],
-                'jns_kelamin' => ($row[22] == null) ? null : $row[22], // ** tambahan
-                'gol_darah' => ($row[10] == null) ? null : $row[10],
-                'tempat_lahir' => ($row[11] == null) ? null : $row[11],
-                'tgl_lahir' => ($row[12] == null) ? null : $row[12],
-                'status_keluarga' => ($row[23] == null) ? null : $row[23], // ** tambahan
-                'ayah_kandung' => ($row[13] == null) ? null : $row[13],
-                'ibu_kandung' => ($row[14] == null) ? null : $row[14],
-                // 'id_pendidikan' => ($row[15] == null) ? null : $this->pendidikan->cariPendidikan($row[15]),
-                // 'id_pekerjaan' => ($row[16] == null) ? null : $this->pekerjaan->cariPekerjaan($row[16]),
-                'pertanyaan' => ($row[19] == null) ? null : $row[19],
-                'tempat_tinggal' => ($row[20] == null) ? null : $row[20],
-                'telp' => ($row[21] == null) ? null : $row[21],
-            ];
-
-            if (!empty($ibuSatuan['nik'])) {
-                array_push($ibu, $ibuSatuan);
-                $this->anggotaModel->insert($ibuSatuan);
+                    $ibuSatuan = [
+                        'id_keluarga' => $idKeluarga['id_keluarga'],
+                        'id_anggota' => $idAnggota,
+                        'nik' => $nik,
+                        'nama_baptis' => ($row[1] == null) ? null : $row[1],
+                        'nama_lengkap' => ($row[2] == null) ? null : $row[2],
+                        'tempat_baptis' => ($row[4] == null) ? null : $row[4],
+                        'tgl_baptis' => ($row[5] == null) ? null : (($row[5] == '1970/01/01') ? null : $row[5]),
+                        'tempat_krisma' => ($row[6] == null) ? null : $row[6],
+                        'tgl_krisma' => ($row[7] == null) ? null : (($row[7] == '1970/01/01') ? null : $row[7]),
+                        'jns_kelamin' => ($row[22] == null) ? null : $row[22], // ** tambahan
+                        'gol_darah' => ($row[10] == null) ? null : $row[10],
+                        'tempat_lahir' => ($row[11] == null) ? null : (($row[11] == '1970/01/01') ? null : $row[11]),
+                        'tgl_lahir' => ($row[12] == null) ? null : $row[12],
+                        'status_keluarga' => ($row[23] == null) ? null : $row[23], // ** tambahan
+                        'ayah_kandung' => ($row[13] == null) ? null : $row[13],
+                        'ibu_kandung' => ($row[14] == null) ? null : $row[14],
+                        'pertanyaan' => ($row[19] == null) ? null : $row[19],
+                        'tempat_tinggal' => ($row[20] == null) ? null : $row[20],
+                        'telp' => ($row[21] == null) ? null : $row[21],
+                    ];
+                    array_push($ibu, $ibuSatuan);
+                    $this->anggotaModel->insert($ibuSatuan);
+                }
             }
 
             $pernikahanIbu = [
                 'id_anggota' => $idAnggota,
                 'tempat_menikah' => ($row[8] == null) ? null : $row[8],
-                'tgl_menikah' => ($row[9] == null) ? null : $row[9],
+                'tgl_menikah' => ($row[9] == null) ? null : (($row[9] == '1970/01/01') ? null : $row[9]),
             ];
 
             if (!empty($pernikahanIbu['tempat_menikah']) || !empty($pernikahanIbu['tgl_menikah'])) {
@@ -257,15 +576,35 @@ class Keluarga extends BaseController
             if (!empty($row[3]) && !empty($row[15])) {
                 array_push($pendidikan, [
                     'id_anggota' => $idAnggota,
-                    'id_pendidikan' => $this->pendidikan->cariPendidikan($row[15])
+                    'id_pendidikan' => $this->pendidikanModel->cariPendidikanExport($row[15])
                 ]);
             }
 
             if (!empty($row[3]) && !empty($row[16])) {
                 array_push($pekerjaan, [
                     'id_anggota' => $idAnggota,
-                    'id_pekerjaan' => $this->pekerjaan->cariPekerjaan($row[16]),
+                    'id_pekerjaan' => $this->pekerjaanModel->cariPekerjaanExport($row[16]),
                 ]);
+            }
+
+            if (!empty($row[17])) {
+                $dataAktivitas = explode(',', $row[17]);
+                foreach ($dataAktivitas as $data) :
+                    array_push($aktivitas, [
+                        'id_anggota' => $idAnggota,
+                        'id_aktivitas' => $this->aktivitasModel->cariAktivitasExport(trim($data))
+                    ]);
+                endforeach;
+            }
+
+            if (!empty($row[18])) {
+                $dataKategorial = explode(',', $row[18]);
+                foreach ($dataKategorial as $data) :
+                    array_push($kategorial, [
+                        'id_anggota' => $idAnggota,
+                        'id_kategorial' => $this->kategorialModel->cariKategorialExport(trim($data))
+                    ]);
+                endforeach;
             }
         endforeach;
 
@@ -277,50 +616,51 @@ class Keluarga extends BaseController
             foreach ($data as $idx => $row) :
                 if ($idx < 1) continue;
 
-                $idKeluarga = $this->keluargaModel->where('no_kk', $row[0])->first();
-                $idAnggota = $this->anggotaModel->kodegenAnggota($idKeluarga['id_keluarga']);
+                $nik = ($row[3] == null) ? null : $row[3];
+                $nama = ($row[2] == null) ? null : $row[2];
+                if (!empty($nik)) {
+                    if (trim($nik) != "-") {
+                        $idKeluarga = $this->keluargaModel->where('no_kk', $row[0])->first();
+                        $idAnggota = $this->anggotaModel->kodegenAnggota($idKeluarga['id_keluarga']);
 
-                $keluargaLainSatuan = [
-                    'id_keluarga' => $idKeluarga['id_keluarga'],
-                    'id_anggota' => $idAnggota,
-                    // 'no_kk' => $row[0],
-                    'nik' => ($row[3] == null) ? null : $row[3],
-                    'nama_baptis' => ($row[1] == null) ? null : $row[1],
-                    'nama_lengkap' => ($row[2] == null) ? null : $row[2],
-                    'tempat_baptis' => ($row[4] == null) ? null : $row[4],
-                    'tgl_baptis' => ($row[5] == null) ? null : $row[5],
-                    'tempat_krisma' => ($row[6] == null) ? null : $row[6],
-                    'tgl_krisma' => ($row[7] == null) ? null : $row[7],
-                    'jns_kelamin' => ($row[8] == null) ? null : $row[8], // ** tambahan
-                    'gol_darah' => ($row[9] == null) ? null : $row[9],
-                    'tempat_lahir' => ($row[10] == null) ? null : $row[10],
-                    'tgl_lahir' => ($row[11] == null) ? null : $row[11],
-                    'status_keluarga' => ($row[12] == null) ? null : $row[12], // ** tambahan
-                    'ayah_kandung' => ($row[13] == null) ? null : $row[13],
-                    'ibu_kandung' => ($row[14] == null) ? null : $row[14],
-                    // 'id_pendidikan' => ($row[15] == null) ? null : $this->pendidikan->cariPendidikan($row[15]),
-                    // 'id_pekerjaan' => ($row[16] == null) ? null : $this->pekerjaan->cariPekerjaan($row[16]),
-                    'pertanyaan' => ($row[19] == null) ? null : $row[19],
-                    'tempat_tinggal' => ($row[20] == null) ? null : $row[20],
-                    'telp' => ($row[21] == null) ? null : $row[21],
-                ];
+                        $keluargaLainSatuan = [
+                            'id_keluarga' => $idKeluarga['id_keluarga'],
+                            'id_anggota' => $idAnggota,
+                            'nik' => $nik,
+                            'nama_baptis' => ($row[1] == null) ? null : $row[1],
+                            'nama_lengkap' => ($row[2] == null) ? null : $row[2],
+                            'tempat_baptis' => ($row[4] == null) ? null : $row[4],
+                            'tgl_baptis' => ($row[5] == null) ? null : (($row[5] == '1970/01/01') ? null : $row[5]),
+                            'tempat_krisma' => ($row[6] == null) ? null : $row[6],
+                            'tgl_krisma' => ($row[7] == null) ? null : (($row[7] == '1970/01/01') ? null : $row[7]),
+                            'jns_kelamin' => ($row[8] == null) ? null : $row[8], // ** tambahan
+                            'gol_darah' => ($row[9] == null) ? null : $row[9],
+                            'tempat_lahir' => ($row[10] == null) ? null : $row[10],
+                            'tgl_lahir' => ($row[11] == null) ? null : (($row[11] == '1970/01/01') ? null : $row[11]),
+                            'status_keluarga' => ($row[12] == null) ? null : $row[12], // ** tambahan
+                            'ayah_kandung' => ($row[13] == null) ? null : $row[13],
+                            'ibu_kandung' => ($row[14] == null) ? null : $row[14],
+                            'pertanyaan' => ($row[19] == null) ? null : $row[19],
+                            'tempat_tinggal' => ($row[20] == null) ? null : $row[20],
+                            'telp' => ($row[21] == null) ? null : $row[21],
+                        ];
 
-                if (!empty($keluargaLainSatuan['nik'])) {
-                    array_push($keluargaLain, $keluargaLainSatuan);
-                    $this->anggotaModel->insert($keluargaLainSatuan);
+                        array_push($keluargaLain, $keluargaLainSatuan);
+                        $this->anggotaModel->insert($keluargaLainSatuan);
+                    }
                 }
 
                 if (!empty($row[3]) && !empty($row[15])) {
                     array_push($pendidikan, [
                         'id_anggota' => $idAnggota,
-                        'id_pendidikan' => $this->pendidikan->cariPendidikan($row[15])
+                        'id_pendidikan' => $this->pendidikanModel->cariPendidikanExport($row[15])
                     ]);
                 }
 
                 if (!empty($row[3]) && !empty($row[16])) {
                     array_push($pekerjaan, [
                         'id_anggota' => $idAnggota,
-                        'id_pekerjaan' => $this->pekerjaan->cariPekerjaan($row[16])
+                        'id_pekerjaan' => $this->pekerjaanModel->cariPekerjaanExport($row[16])
                     ]);
                 }
 
@@ -334,6 +674,26 @@ class Keluarga extends BaseController
                 if (!empty($sekolahSatuan['satuan_pendidikan'])) {
                     array_push($sekolah, $sekolahSatuan);
                 }
+
+                if (!empty($row[17])) {
+                    $dataAktivitas = explode(',', $row[17]);
+                    foreach ($dataAktivitas as $data) :
+                        array_push($aktivitas, [
+                            'id_anggota' => $idAnggota,
+                            'id_aktivitas' => $this->aktivitasModel->cariAktivitasExport(trim($data))
+                        ]);
+                    endforeach;
+                }
+
+                if (!empty($row[18])) {
+                    $dataKategorial = explode(',', $row[18]);
+                    foreach ($dataKategorial as $data) :
+                        array_push($kategorial, [
+                            'id_anggota' => $idAnggota,
+                            'id_kategorial' => $this->kategorialModel->cariKategorialExport(trim($data))
+                        ]);
+                    endforeach;
+                }
             endforeach;
         }
 
@@ -341,7 +701,12 @@ class Keluarga extends BaseController
         $this->detPendidikanModel->insertBatch($pendidikan);
         $this->detPekerjaanModel->insertBatch($pekerjaan);
         $this->detSekolahModel->insertBatch($sekolah);
+        $this->detAktivitasModel->insertBatch($aktivitas);
+        $this->detKategorialModel->insertBatch($kategorial);
 
-        dd($data, $keluraga, $ayah, $ibu, $keluargaLain, $pernikahan, $pendidikan, $pekerjaan, $sekolah);
+        // dd($keluraga, $ayah, $ibu, $keluargaLain, $pernikahan, $pendidikan, $pekerjaan, $sekolah, $aktivitas, $kategorial);
+
+        session()->setflashdata('success', 'Sukses');
+        return redirect()->to('/admin/keluarga/ex');
     }
 }

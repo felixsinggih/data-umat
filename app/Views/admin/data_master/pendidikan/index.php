@@ -3,7 +3,7 @@
 
 <row>
     <div class="card">
-        <div class="card-body">
+        <div class="card-body pb-0">
             <table id="dataTable1" class="table table-bordered table-hover table-striped">
                 <thead align="center">
                     <tr>

@@ -36,15 +36,17 @@ class AnggotaModel extends Model
     public function dataAnggota($idKeluarga)
     {
         return $this
-            ->select('dsc_anggota_keluarga.*, dpen.id_pendidikan, pen.nama as nama_pendidikan, dper.tempat_menikah, 
+            ->select('dsc_anggota_keluarga.*, ds.satuan_pendidikan, dpen.id_pendidikan, pen.nama as nama_pendidikan, dper.tempat_menikah, 
             dper.tgl_menikah, dpek.id_pekerjaan, pek.nama as nama_pekerjaan')
-            // ->from('dsc_anggota_keluarga as a')
+            ->join('dsc_detail_sekolah as ds', 'ds.id_anggota = dsc_anggota_keluarga.id_anggota', 'left')
             ->join('dsc_detail_pendidikan as dpen', 'dpen.id_anggota = dsc_anggota_keluarga.id_anggota', 'left')
             ->join('dsc_pendidikan as pen', 'pen.id_pendidikan = dpen.id_pendidikan', 'left')
             ->join('dsc_detail_pernikahan as dper', 'dper.id_anggota = dsc_anggota_keluarga.id_anggota', 'left')
             ->join('dsc_detail_pekerjaan as dpek', 'dpek.id_anggota = dsc_anggota_keluarga.id_anggota', 'left')
             ->join('dsc_pekerjaan as pek', 'pek.id_pekerjaan = dpek.id_pekerjaan', 'left')
-            ->where('dsc_anggota_keluarga.id_keluarga', $idKeluarga);
+            ->where('dsc_anggota_keluarga.id_keluarga', $idKeluarga)
+            ->orderBy('dsc_anggota_keluarga.id_anggota', 'ASC')
+            ->findAll();
     }
 
     public function hitungUmurUmat($operatorMin, $umurMin, $operatorMax, $umurMax)

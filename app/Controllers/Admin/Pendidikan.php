@@ -25,10 +25,4 @@ class Pendidikan extends BaseController
         ];
         return view('admin/data_master/pendidikan/index', $data);
     }
-
-    public function cariPendidikan($nama)
-    {
-        $pendidikan = $this->pendidikanModel->where('nama', $nama)->first();
-        return $pendidikan['id_pendidikan'];
-    }
 }
