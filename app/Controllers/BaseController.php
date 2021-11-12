@@ -9,6 +9,8 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+use App\Models\ParokiModel;
+
 /**
  * Class BaseController
  *
@@ -50,5 +52,9 @@ class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
         $this->session = session();
         $this->db = \Config\Database::connect();
+
+        $this->parokiModel = new ParokiModel();
+        $parokiData = $this->parokiModel->find('1');
+        $this->session->set('logoParoki', $parokiData['logo']);
     }
 }

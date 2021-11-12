@@ -29,6 +29,8 @@ class Login extends BaseController
                 if ($userData['status'] == "Aktif") {
                     $this->session->set('uid', $userData['uid']);
                     $this->session->set('name', $userData['name']);
+                    $this->session->set('role', $userData['role']);
+                    $this->session->set('isFirst', $userData['is_first']);
                     $this->session->set('isAdmin', true);
 
                     session()->setflashdata('success', 'Selamat Datang, ' . session()->get('name'));

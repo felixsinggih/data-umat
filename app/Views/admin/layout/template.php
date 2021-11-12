@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Paroki St. Stephanus Cilacap | <?= $title ?></title>
-    <link href="/upload/favicon.png" rel="shortcut icon">
+    <link href="/upload/img/<?= session()->get('logoParoki') ?>" rel="shortcut icon">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -76,7 +76,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="/admin" class="brand-link">
-                <img src="/upload/favicon.png" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="/upload/img/<?= session()->get('logoParoki') ?>" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Paroki Cilacap</span>
             </a>
 

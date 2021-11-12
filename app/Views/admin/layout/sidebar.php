@@ -8,6 +8,29 @@
             </p>
         </a>
     </li>
+    <li class="nav-item has-treeview<?= ($act[0] == 'settings') ? ' menu-open' : ''; ?>">
+        <a href="#" class="nav-link<?= ($act[0] == 'settings') ? ' active' : ''; ?>">
+            <i class="nav-icon fas fa-cogs"></i>
+            <p>Settings</p>
+            <i class="right fas fa-angle-left"></i>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="/admin/setting" class="nav-link<?= ($act[1] == 'paroki') ? ' active' : ''; ?>">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Paroki</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="/admin/paroki" class="nav-link<?= ($act[1] == 'admin') ? ' active' : ''; ?>">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Admin Paroki</p>
+                </a>
+            </li>
+        </ul>
+    </li>
     <li class="nav-item has-treeview<?= ($act[0] == 'master') ? ' menu-open' : ''; ?>">
         <a href="#" class="nav-link<?= ($act[0] == 'master') ? ' active' : ''; ?>">
             <i class="nav-icon fas fa-book"></i>

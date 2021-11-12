@@ -37,6 +37,18 @@ $routes->get('/signout', 'Login::signout', ['filter' => 'auth']);
 
 $routes->get('/admin', 'Admin\Dashboard::index', ['filter' => 'auth']);
 
+$routes->get('/admin/setting', 'Admin\Settings::index', ['filter' => 'auth']);
+$routes->post('/admin/setting/update', 'Admin\Settings::editDataParoki', ['filter' => 'auth']);
+
+$routes->get('/admin/paroki', 'Admin\Admin::index', ['filter' => 'auth']);
+$routes->get('/admin/paroki', 'Admin\Admin::index', ['filter' => 'auth']);
+$routes->get('/admin/paroki/add', 'Admin\Admin::add', ['filter' => 'auth']);
+$routes->post('/admin/paroki/save', 'Admin\Admin::addData', ['filter' => 'auth']);
+$routes->get('/admin/paroki/(:segment)', 'Admin\Admin::detail/$1', ['filter' => 'auth']);
+$routes->get('/admin/paroki/edit/(:segment)', 'Admin\Admin::edit/$1', ['filter' => 'auth']);
+$routes->post('/admin/paroki/update/(:segment)', 'Admin\Admin::editData/$1', ['filter' => 'auth']);
+$routes->delete('/admin/paroki/delete/(:segment)', 'Admin\Admin::delete/$1', ['filter' => 'auth']);
+
 $routes->get('/admin/lingkungan', 'Admin\Lingkungan::index', ['filter' => 'auth']);
 $routes->get('/admin/lingkungan/add', 'Admin\Lingkungan::add', ['filter' => 'auth']);
 $routes->post('/admin/lingkungan/save', 'Admin\Lingkungan::addData', ['filter' => 'auth']);
