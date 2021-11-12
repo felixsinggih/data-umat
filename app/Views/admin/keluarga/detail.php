@@ -1,13 +1,13 @@
 <?= $this->extend('admin/layout/template') ?>
 <?= $this->section('content') ?>
 <?= $this->include('admin/layout/fungsi') ?>
-
 <row>
     <div class="card">
         <div class="card-body">
             <div class="form-group">
                 <a href="/admin/keluarga" class="btn btn-secondary"><i class="fas fa-undo"></i> Kembali</a>
-                <a href="/keluarga/anggota/add/<?= $keluarga['id_keluarga'] ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Anggota Keluarga</a>
+                <a href="/admin/keluarga/edit/<?= $keluarga['id_keluarga'] ?>" class="btn btn-success"><i class="fas fa-pencil-alt"></i> Edit Data Keluarga</a>
+                <a href="/admin/anggota/add/<?= $keluarga['id_keluarga'] ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Anggota Keluarga</a>
                 <a href="/admin/keluarga/print/<?= $keluarga['id_keluarga'] ?>" target="_blank" class="btn btn-danger"><i class="fas fa-print"></i> Cetak</a>
             </div>
 
@@ -84,9 +84,13 @@
                                 endif ?>
                             </td>
                             <td>
-                                <a href="/keluarga/anggota/<?= $data['id_anggota'] ?>" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                <a href="#" class="btn btn-sm btn-success"><i class="fas fa-pencil-alt"></i></a>
-                                <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                <a href="/admin/anggota/<?= $data['id_anggota'] ?>" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
+                                <a href="/admin/anggota/edit/<?= $data['id_anggota'] ?>" class="btn btn-sm btn-success"><i class="fas fa-pencil-alt"></i></a>
+                                <form action="/admin/anggota/delete/<?= $data['id_anggota'] ?>" method="post" class="d-inline">
+                                    <?= csrf_field(); ?>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin akan menghapus data tersebut?');"><i class="fas fa-trash-alt"></i></button>
+                                </form>
                             </td>
                         </tr>
                     <?php $i++;

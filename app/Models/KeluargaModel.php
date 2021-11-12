@@ -39,7 +39,7 @@ class KeluargaModel extends Model
             return $this
                 ->join('dsc_lingkungan as l', 'l.id_lingkungan = dsc_keluarga.id_lingkungan')
                 ->join('dsc_anggota_keluarga as ak', 'ak.id_keluarga = dsc_keluarga.id_keluarga')
-                ->where('right(ak.id_anggota, 1)', '1')
+                ->where('ak.is_head', 'Y')
                 ->like('dsc_keluarga.no_kk', $keyword)
                 ->orLike('ak.nik', $keyword)
                 ->orLike('ak.nama_lengkap', $keyword);
@@ -47,7 +47,7 @@ class KeluargaModel extends Model
             return $this
                 ->join('dsc_lingkungan as l', 'l.id_lingkungan = dsc_keluarga.id_lingkungan')
                 ->join('dsc_anggota_keluarga as ak', 'ak.id_keluarga = dsc_keluarga.id_keluarga')
-                ->where('right(ak.id_anggota, 1)', '1');
+                ->where('ak.is_head', 'Y');
         }
     }
 }

@@ -15,8 +15,12 @@
                     </div>
                 </form>
             </div>
+
             <div class="form-group">
                 <a href="/admin/keluarga/add" class="btn btn-outline-primary"><i class="fas fa-plus"></i> Tambah Data</a>
+            </div>
+            <div class="form-group">
+                <h6>Total keluarga <?= $pager->getTotal('keluarga') ?></h6>
                 <table id="dataTable1" class="table table-bordered table-hover table-striped">
                     <thead align="center">
                         <tr>

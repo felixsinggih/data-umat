@@ -54,6 +54,14 @@
             font-style: italic;
             margin-top: 5px;
         }
+
+        .lead-table {
+            font-size: 1rem;
+            font-weight: 500;
+            font-style: italic;
+            margin-left: 0px;
+            padding-bottom: 0px;
+        }
     </style>
 </head>
 

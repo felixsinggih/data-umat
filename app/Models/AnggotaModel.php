@@ -14,7 +14,7 @@ class AnggotaModel extends Model
     protected $allowedFields = [
         'id_keluarga', 'id_anggota', 'nik', 'nama_baptis', 'nama_lengkap', 'tempat_baptis', 'tgl_baptis',
         'tempat_krisma', 'tgl_krisma', 'jns_kelamin', 'gol_darah', 'tempat_lahir', 'tgl_lahir', 'status_keluarga',
-        'ayah_kandung', 'ibu_kandung', 'pertanyaan', 'tempat_tinggal', 'telp'
+        'ayah_kandung', 'ibu_kandung', 'pertanyaan', 'tempat_tinggal', 'telp', 'is_head'
     ];
 
     public function kodegenAnggota($idKeluarga)

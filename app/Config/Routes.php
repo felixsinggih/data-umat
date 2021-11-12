@@ -66,14 +66,20 @@ $routes->get('/admin/pendidikan', 'Admin\Pendidikan::index', ['filter' => 'auth'
 $routes->match(['get', 'post'], '/admin/keluarga', 'Admin\Keluarga::index', ['filter' => 'auth']);
 $routes->get('/admin/keluarga/add', 'Admin\Keluarga::add', ['filter' => 'auth']);
 $routes->post('/admin/keluarga/save', 'Admin\Keluarga::addData', ['filter' => 'auth']);
-$routes->get('/admin/keluarga/ex', 'Admin\Keluarga::ex', ['filter' => 'auth']);
-$routes->post('/admin/keluarga/export', 'Admin\Keluarga::export', ['filter' => 'auth']);
 $routes->get('/admin/keluarga/(:segment)', 'Admin\Keluarga::detail/$1', ['filter' => 'auth']);
+$routes->get('/admin/keluarga/edit/(:segment)', 'Admin\Keluarga::edit/$1', ['filter' => 'auth']);
+$routes->post('/admin/keluarga/update/(:segment)', 'Admin\Keluarga::editData/$1', ['filter' => 'auth']);
 $routes->get('/admin/keluarga/print/(:segment)', 'Admin\Keluarga::print/$1', ['filter' => 'auth']);
 
-$routes->get('/keluarga/anggota/(:segment)', 'Admin\Keluarga::detailAnggota/$1', ['filter' => 'auth']);
-$routes->get('/keluarga/anggota/add/(:segment)', 'Admin\Keluarga::addAnggota/$1', ['filter' => 'auth']);
-$routes->post('/keluarga/anggota/save/(:segment)', 'Admin\Keluarga::addDataAnggota/$1', ['filter' => 'auth']);
+$routes->get('/admin/keluarga/export/data', 'Admin\Keluarga::ex', ['filter' => 'auth']);
+$routes->post('/admin/keluarga/export/save', 'Admin\Keluarga::export', ['filter' => 'auth']);
+
+$routes->get('/admin/anggota/(:segment)', 'Admin\Anggota::detail/$1', ['filter' => 'auth']);
+$routes->get('/admin/anggota/add/(:segment)', 'Admin\Anggota::add/$1', ['filter' => 'auth']);
+$routes->post('/admin/anggota/save/(:segment)', 'Admin\Anggota::addData/$1', ['filter' => 'auth']);
+$routes->get('/admin/anggota/edit/(:segment)', 'Admin\Anggota::edit/$1', ['filter' => 'auth']);
+$routes->post('/admin/anggota/update/(:segment)', 'Admin\Anggota::editData/$1', ['filter' => 'auth']);
+$routes->delete('/admin/anggota/delete/(:segment)', 'Admin\Anggota::delete/$1', ['filter' => 'auth']);
 
 $routes->get('/admin/demografi', 'Admin\Demografi::index', ['filter' => 'auth']);
 

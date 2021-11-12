@@ -8,6 +8,9 @@
             <h3 class="card-title">Data Keluarga</h3>
         </div>
         <div class="card-body pb-0">
+            <div class="form-group">
+                <a href="/admin/keluarga/<?= $keluarga['id_keluarga'] ?>" class="btn btn-secondary"><i class="fas fa-undo"></i> Kembali</a>
+            </div>
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="form-group row">
@@ -52,6 +55,14 @@
             <h3 class="card-title">Data Individu</h3>
         </div>
         <div class="card-body pb-0">
+            <div class="form-group">
+                <a href="/admin/anggota/edit/<?= $anggota['id_anggota'] ?>" class="btn btn-success"><i class="fas fa-pencil-alt"></i> Edit</a>
+                <form action="/admin/anggota/delete/<?= $anggota['id_anggota'] ?>" method="post" class="d-inline">
+                    <?= csrf_field(); ?>
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin akan menghapus data tersebut?');"><i class="fas fa-trash-alt"></i> Hapus</button>
+                </form>
+            </div>
             <div class="row">
                 <div class="col-lg-6 col-md-12">
                     <div class="form-group row">

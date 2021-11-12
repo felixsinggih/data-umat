@@ -5,7 +5,7 @@
     <div class="card">
         <div class="card-body">
 
-            <form action="/admin/keluarga/export" method="post" enctype="multipart/form-data">
+            <form action="/admin/keluarga/export/save" method="post" enctype="multipart/form-data">
                 <?= csrf_field(); ?>
                 <div class="form-group row">
                     <label for="excel_file" class="col-sm-2 col-form-label">Dokumen</label>

@@ -7,6 +7,7 @@ use CodeIgniter\Model;
 class DetailPernikahanModel extends Model
 {
     protected $table = 'dsc_detail_pernikahan';
+    protected $primaryKey = 'id_anggota';
 
     protected $useTimestamps = true;
 
