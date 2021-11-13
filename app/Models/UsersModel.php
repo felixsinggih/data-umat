@@ -14,13 +14,29 @@ class UsersModel extends Model
 
     protected $allowedFields = ['uid', 'name', 'email', 'username', 'password', 'role', 'status', 'is_first'];
 
+    public function showAdmin()
+    {
+        return $this->select('dsc_users.uid, dsc_users.name, dsc_users.email, dsc_users.username, dsc_users.role, dsc_users.status,
+        dsc_users.is_first, dsc_users.created_at, dsc_users.updated_at, l.nama, l.id_lingkungan, ul.uid_lingkungan')
+            ->join('dsc_users_lingkungan as ul', 'ul.uid = dsc_users.uid', 'left')
+            ->join('dsc_lingkungan as l', 'l.id_lingkungan = ul.id_lingkungan', 'left');
+    }
 
-    public function kodegenSuperadmin()
+    public function selectAdmin($uid)
+    {
+        return $this->select('dsc_users.uid, dsc_users.name, dsc_users.email, dsc_users.username, dsc_users.role, dsc_users.status,
+        dsc_users.is_first, dsc_users.created_at, dsc_users.updated_at, l.nama, l.id_lingkungan, ul.uid_lingkungan')
+            ->join('dsc_users_lingkungan as ul', 'ul.uid = dsc_users.uid', 'left')
+            ->join('dsc_lingkungan as l', 'l.id_lingkungan = ul.id_lingkungan', 'left')
+            ->where('dsc_users.uid', $uid)->first();
+    }
+
+    public function kodegen()
     {
         $thn = date('Y');
         $bln = date('m');
         $param = 'AD' . $thn . $bln;
-        $query = $this->select('max(right(uid, 2)) as kode')
+        $query = $this->select('max(right(uid, 3)) as kode')
             ->like('uid', $param)
             ->orderBy('uid', 'DESC')
             ->get()->getRowArray();
@@ -29,13 +45,8 @@ class UsersModel extends Model
         } else {
             $kode = 1;
         }
-        $kodemax = str_pad($kode, 2, "0", STR_PAD_LEFT);
+        $kodemax = str_pad($kode, 3, "0", STR_PAD_LEFT);
         $kodejadi = $param . $kodemax;
         return $kodejadi;
-    }
-
-    public function selectUserRole($role)
-    {
-        return $this->where('role', $role)->orderBy('uid', 'ASC');
     }
 }

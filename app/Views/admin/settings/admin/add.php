@@ -53,6 +53,43 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group row">
+                    <label for="role" class="col-sm-2 col-form-label">Level Admin</label>
+                    <div class="col-sm-10">
+                        <select class="custom-select <?= ($validation->hasError('role')) ? 'is-invalid' : ''; ?>" id="role" name="role" onchange="showDiv('hidden_div', this)">
+                            <?php if (empty(old('role'))) { ?>
+                                <option value="" selected disabled>Pilih Level</option>
+                            <?php } else { ?>
+                                <option value="<?= old('role') ?>">
+                                    <?php if (old('role') == "") echo 'Pilih role';
+                                    else echo old('role'); ?>
+                                </option>
+                            <?php } ?>
+                            <option value="Paroki">Paroki</option>
+                            <option value="Lingkungan">Lingkungan</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('role'); ?>
+                        </div>
+                    </div>
+                </div>
+                <div id="hidden_div">
+                    <div class="form-group row">
+                        <label for="id_lingkungan" class="col-sm-2 col-form-label">Lingkungan / Stasi</label>
+                        <div class="col-sm-10">
+                            <select class="custom-select <?= ($validation->hasError('id_lingkungan')) ? 'is-invalid' : ''; ?>" id="id_lingkungan" name="id_lingkungan">
+                                <option value="" selected disabled>Pilih Lingkungan / Stasi</option>
+                                <?php foreach ($lingkungan as $data) : ?>
+                                    <option value="<?= $data['id_lingkungan'] ?>"><?= $data['nama'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('id_lingkungan'); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="float-right">
                     <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah anda yakin akan menyimpan data tersebut?');">Simpan</button>
                 </div>
@@ -62,5 +99,27 @@
         <!-- /.card -->
     </form>
 </row>
+
+<script>
+    window.onload = (event) => {
+        var textselected = document.getElementById("role").value;
+        if (textselected == 'Lingkungan') {
+            $('#hidden_div').show();
+        } else {
+            $('#hidden_div').hide();
+        }
+    };
+
+    $(document).ready(function() {
+        $("#role").change(function() {
+            var textselected = document.getElementById("role").value;
+            if (textselected == 'Lingkungan') {
+                $('#hidden_div').show();
+            } else {
+                $('#hidden_div').hide();
+            }
+        });
+    });
+</script>
 
 <?= $this->endSection() ?>

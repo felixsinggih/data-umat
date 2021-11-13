@@ -35,65 +35,72 @@ $routes->get('/login', 'Login::index', ['filter' => 'noauth']);
 $routes->post('/signin', 'Login::signin', ['filter' => 'noauth']);
 $routes->get('/signout', 'Login::signout', ['filter' => 'auth']);
 
-$routes->get('/admin', 'Admin\Dashboard::index', ['filter' => 'auth']);
+// ** ADMIN PAROKI
+$routes->group('/admin', ['filter' => 'auth', 'filter' => 'authParoki'], function ($routes) {
+    $routes->get('', 'Admin\Dashboard::index');
+    $routes->get('setting', 'Admin\Settings::index');
+    $routes->post('setting/update', 'Admin\Settings::editDataParoki');
 
-$routes->get('/admin/setting', 'Admin\Settings::index', ['filter' => 'auth']);
-$routes->post('/admin/setting/update', 'Admin\Settings::editDataParoki', ['filter' => 'auth']);
+    $routes->get('paroki', 'Admin\Admin::index');
+    $routes->get('paroki', 'Admin\Admin::index');
+    $routes->get('paroki/add', 'Admin\Admin::add');
+    $routes->post('paroki/save', 'Admin\Admin::addData');
+    $routes->get('paroki/(:segment)', 'Admin\Admin::detail/$1');
+    $routes->get('paroki/edit/(:segment)', 'Admin\Admin::edit/$1');
+    $routes->post('paroki/update/(:segment)', 'Admin\Admin::editData/$1');
+    $routes->delete('paroki/delete/(:segment)', 'Admin\Admin::delete/$1');
 
-$routes->get('/admin/paroki', 'Admin\Admin::index', ['filter' => 'auth']);
-$routes->get('/admin/paroki', 'Admin\Admin::index', ['filter' => 'auth']);
-$routes->get('/admin/paroki/add', 'Admin\Admin::add', ['filter' => 'auth']);
-$routes->post('/admin/paroki/save', 'Admin\Admin::addData', ['filter' => 'auth']);
-$routes->get('/admin/paroki/(:segment)', 'Admin\Admin::detail/$1', ['filter' => 'auth']);
-$routes->get('/admin/paroki/edit/(:segment)', 'Admin\Admin::edit/$1', ['filter' => 'auth']);
-$routes->post('/admin/paroki/update/(:segment)', 'Admin\Admin::editData/$1', ['filter' => 'auth']);
-$routes->delete('/admin/paroki/delete/(:segment)', 'Admin\Admin::delete/$1', ['filter' => 'auth']);
+    $routes->get('lingkungan', 'Admin\Lingkungan::index');
+    $routes->get('lingkungan/add', 'Admin\Lingkungan::add');
+    $routes->post('lingkungan/save', 'Admin\Lingkungan::addData');
+    $routes->get('lingkungan/edit/(:segment)', 'Admin\Lingkungan::edit/$1');
+    $routes->post('lingkungan/update/(:segment)', 'Admin\Lingkungan::editData/$1');
 
-$routes->get('/admin/lingkungan', 'Admin\Lingkungan::index', ['filter' => 'auth']);
-$routes->get('/admin/lingkungan/add', 'Admin\Lingkungan::add', ['filter' => 'auth']);
-$routes->post('/admin/lingkungan/save', 'Admin\Lingkungan::addData', ['filter' => 'auth']);
-$routes->get('/admin/lingkungan/edit/(:segment)', 'Admin\Lingkungan::edit/$1', ['filter' => 'auth']);
-$routes->post('/admin/lingkungan/update/(:segment)', 'Admin\Lingkungan::editData/$1', ['filter' => 'auth']);
+    $routes->get('aktivitas', 'Admin\Aktivitas::index');
+    $routes->get('aktivitas/add', 'Admin\Aktivitas::add');
+    $routes->post('aktivitas/save', 'Admin\Aktivitas::addData');
+    $routes->get('aktivitas/edit/(:segment)', 'Admin\Aktivitas::edit/$1');
+    $routes->post('aktivitas/update/(:segment)', 'Admin\Aktivitas::editData/$1');
 
-$routes->get('/admin/aktivitas', 'Admin\Aktivitas::index', ['filter' => 'auth']);
-$routes->get('/admin/aktivitas/add', 'Admin\Aktivitas::add', ['filter' => 'auth']);
-$routes->post('/admin/aktivitas/save', 'Admin\Aktivitas::addData', ['filter' => 'auth']);
-$routes->get('/admin/aktivitas/edit/(:segment)', 'Admin\Aktivitas::edit/$1', ['filter' => 'auth']);
-$routes->post('/admin/aktivitas/update/(:segment)', 'Admin\Aktivitas::editData/$1', ['filter' => 'auth']);
+    $routes->get('kategorial', 'Admin\Kategorial::index');
+    $routes->get('kategorial/add', 'Admin\Kategorial::add');
+    $routes->post('kategorial/save', 'Admin\Kategorial::addData');
+    $routes->get('kategorial/edit/(:segment)', 'Admin\Kategorial::edit/$1');
+    $routes->post('kategorial/update/(:segment)', 'Admin\Kategorial::editData/$1');
 
-$routes->get('/admin/kategorial', 'Admin\Kategorial::index', ['filter' => 'auth']);
-$routes->get('/admin/kategorial/add', 'Admin\Kategorial::add', ['filter' => 'auth']);
-$routes->post('/admin/kategorial/save', 'Admin\Kategorial::addData', ['filter' => 'auth']);
-$routes->get('/admin/kategorial/edit/(:segment)', 'Admin\Kategorial::edit/$1', ['filter' => 'auth']);
-$routes->post('/admin/kategorial/update/(:segment)', 'Admin\Kategorial::editData/$1', ['filter' => 'auth']);
+    $routes->get('pekerjaan', 'Admin\Pekerjaan::index');
+    $routes->get('pekerjaan/add', 'Admin\Pekerjaan::add');
+    $routes->post('pekerjaan/save', 'Admin\Pekerjaan::addData');
+    $routes->get('pekerjaan/edit/(:segment)', 'Admin\Pekerjaan::edit/$1');
+    $routes->post('pekerjaan/update/(:segment)', 'Admin\Pekerjaan::editData/$1');
 
-$routes->get('/admin/pekerjaan', 'Admin\Pekerjaan::index', ['filter' => 'auth']);
-$routes->get('/admin/pekerjaan/add', 'Admin\Pekerjaan::add', ['filter' => 'auth']);
-$routes->post('/admin/pekerjaan/save', 'Admin\Pekerjaan::addData', ['filter' => 'auth']);
-$routes->get('/admin/pekerjaan/edit/(:segment)', 'Admin\Pekerjaan::edit/$1', ['filter' => 'auth']);
-$routes->post('/admin/pekerjaan/update/(:segment)', 'Admin\Pekerjaan::editData/$1', ['filter' => 'auth']);
+    $routes->get('pendidikan', 'Admin\Pendidikan::index');
 
-$routes->get('/admin/pendidikan', 'Admin\Pendidikan::index', ['filter' => 'auth']);
+    $routes->match(['get', 'post'], 'keluarga', 'Admin\Keluarga::index');
+    $routes->get('keluarga/add', 'Admin\Keluarga::add');
+    $routes->post('keluarga/save', 'Admin\Keluarga::addData');
+    $routes->get('keluarga/(:segment)', 'Admin\Keluarga::detail/$1');
+    $routes->get('keluarga/edit/(:segment)', 'Admin\Keluarga::edit/$1');
+    $routes->post('keluarga/update/(:segment)', 'Admin\Keluarga::editData/$1');
+    $routes->get('keluarga/print/(:segment)', 'Admin\Keluarga::print/$1');
 
-$routes->match(['get', 'post'], '/admin/keluarga', 'Admin\Keluarga::index', ['filter' => 'auth']);
-$routes->get('/admin/keluarga/add', 'Admin\Keluarga::add', ['filter' => 'auth']);
-$routes->post('/admin/keluarga/save', 'Admin\Keluarga::addData', ['filter' => 'auth']);
-$routes->get('/admin/keluarga/(:segment)', 'Admin\Keluarga::detail/$1', ['filter' => 'auth']);
-$routes->get('/admin/keluarga/edit/(:segment)', 'Admin\Keluarga::edit/$1', ['filter' => 'auth']);
-$routes->post('/admin/keluarga/update/(:segment)', 'Admin\Keluarga::editData/$1', ['filter' => 'auth']);
-$routes->get('/admin/keluarga/print/(:segment)', 'Admin\Keluarga::print/$1', ['filter' => 'auth']);
+    $routes->get('keluarga/export/data', 'Admin\Keluarga::ex');
+    $routes->post('keluarga/export/save', 'Admin\Keluarga::export');
 
-$routes->get('/admin/keluarga/export/data', 'Admin\Keluarga::ex', ['filter' => 'auth']);
-$routes->post('/admin/keluarga/export/save', 'Admin\Keluarga::export', ['filter' => 'auth']);
+    $routes->get('anggota/(:segment)', 'Admin\Anggota::detail/$1');
+    $routes->get('anggota/add/(:segment)', 'Admin\Anggota::add/$1');
+    $routes->post('anggota/save/(:segment)', 'Admin\Anggota::addData/$1');
+    $routes->get('anggota/edit/(:segment)', 'Admin\Anggota::edit/$1');
+    $routes->post('anggota/update/(:segment)', 'Admin\Anggota::editData/$1');
+    $routes->delete('anggota/delete/(:segment)', 'Admin\Anggota::delete/$1');
 
-$routes->get('/admin/anggota/(:segment)', 'Admin\Anggota::detail/$1', ['filter' => 'auth']);
-$routes->get('/admin/anggota/add/(:segment)', 'Admin\Anggota::add/$1', ['filter' => 'auth']);
-$routes->post('/admin/anggota/save/(:segment)', 'Admin\Anggota::addData/$1', ['filter' => 'auth']);
-$routes->get('/admin/anggota/edit/(:segment)', 'Admin\Anggota::edit/$1', ['filter' => 'auth']);
-$routes->post('/admin/anggota/update/(:segment)', 'Admin\Anggota::editData/$1', ['filter' => 'auth']);
-$routes->delete('/admin/anggota/delete/(:segment)', 'Admin\Anggota::delete/$1', ['filter' => 'auth']);
+    $routes->get('demografi', 'Admin\Demografi::index');
+});
 
-$routes->get('/admin/demografi', 'Admin\Demografi::index', ['filter' => 'auth']);
+// ** ADMIN LINGKUNGAN
+$routes->group('/adling', ['filter' => 'auth', 'filter' => 'authLingkungan'], function ($routes) {
+    $routes->get('', 'AdminLingkungan\Dashboard::index');
+});
 
 /*
  * --------------------------------------------------------------------

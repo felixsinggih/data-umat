@@ -4,15 +4,21 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin" class="nav-link">Dashboard</a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/keluarga" class="nav-link">Data Keluarga</a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/demografi" class="nav-link">Demografi Umat</a>
-        </li>
+        <?php if (session()->get('role') == 'Paroki') : ?>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/admin" class="nav-link">Dashboard</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/admin/keluarga" class="nav-link">Data Keluarga</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/admin/demografi" class="nav-link">Demografi Umat</a>
+            </li>
+        <?php elseif (session()->get('role') == 'Lingkungan') : ?>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/adling" class="nav-link">Dashboard</a>
+            </li>
+        <?php endif; ?>
     </ul>
 
     <!-- Right navbar links -->

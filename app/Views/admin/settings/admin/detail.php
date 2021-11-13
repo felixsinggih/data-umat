@@ -31,6 +31,16 @@
                 <p class="col-sm-10 col-form-label"><?= $admin['status'] ?></p>
             </div>
             <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Level Admin</label>
+                <p class="col-sm-10 col-form-label"><?= $admin['role'] ?></p>
+            </div>
+            <?php if ($admin['role'] == 'Lingkungan') : ?>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Lingkungan / Stasi</label>
+                    <p class="col-sm-10 col-form-label"><?= $admin['nama'] ?></p>
+                </div>
+            <?php endif; ?>
+            <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Last Update</label>
                 <p class="col-sm-10 col-form-label"><?= datetime($admin['updated_at']) ?></p>
             </div>

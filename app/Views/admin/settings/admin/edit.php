@@ -55,6 +55,28 @@
                         <i>Hanya diisi bila ingin mereset password!</i>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="role" class="col-sm-2 col-form-label">Level Admin</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="role" name="role" value="<?= $admin['role'] ?>" readonly>
+                    </div>
+                </div>
+                <?php if ($admin['role'] == 'Lingkungan') : ?>
+                    <div class="form-group row">
+                        <label for="id_lingkungan" class="col-sm-2 col-form-label">Lingkungan / Stasi</label>
+                        <div class="col-sm-10">
+                            <select class="custom-select <?= ($validation->hasError('id_lingkungan')) ? 'is-invalid' : ''; ?>" id="id_lingkungan" name="id_lingkungan">
+                                <option value="<?= $admin['id_lingkungan'] ?>"><?= $admin['nama'] ?></option>
+                                <?php foreach ($lingkungan as $data) : ?>
+                                    <option value="<?= $data['id_lingkungan'] ?>"><?= $data['nama'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('id_lingkungan'); ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
                 <div class="float-right">
                     <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah anda yakin akan menyimpan data tersebut?');">Simpan</button>
                 </div>

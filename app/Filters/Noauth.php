@@ -11,9 +11,16 @@ class Noauth implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         // Do something here
-        if (session()->get('isAdmin')) {
-            session()->setflashdata('success', 'Selamat Datang, ' . session()->get('name'));
-            return redirect()->to(base_url('admin'));
+        if (session()->get('isLogged')) {
+            if (session()->get('role') == 'Paroki') {
+                session()->setflashdata('success', 'Selamat Datang, ' . session()->get('name'));
+                return redirect()->to(base_url('admin'));
+            }
+
+            if (session()->get('role') == 'Lingkungan') {
+                session()->setflashdata('success', 'Selamat Datang, ' . session()->get('name'));
+                return redirect()->to(base_url('adling'));
+            }
         }
     }
 

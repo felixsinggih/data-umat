@@ -11,11 +11,12 @@
                 <table id="dataTable1" class="table table-bordered table-hover table-striped">
                     <thead align="center">
                         <tr>
-                            <td style="width: 15%">ID</td>
+                            <td style="width: 10%">NO</td>
                             <td>Nama</td>
                             <td>Username</td>
-                            <td>Email</td>
-                            <td style="width: 100px;">Aksi</td>
+                            <td style="width: 100px;">Level</td>
+                            <td>Lingkungan/ Stasi</td>
+                            <td style="width: 110px;">Aksi</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,7 +26,8 @@
                                 <td><?= $i ?></td>
                                 <td align="left"><?= $data['name'] ?></td>
                                 <td align="left"><?= $data['username'] ?></td>
-                                <td align="left"><?= $data['email'] ?></td>
+                                <td><?= $data['role'] ?></td>
+                                <td><?= ($data['nama'] == null) ? '-' : $data['nama'] ?></td>
                                 <td>
                                     <a href="/admin/paroki/<?= $data['uid'] ?>" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
                                     <a href="/admin/paroki/edit/<?= $data['uid'] ?>" class="btn btn-sm btn-success"><i class="fas fa-pencil-alt"></i></a>
