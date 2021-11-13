@@ -16,4 +16,9 @@ class AktivitasModel extends Model
         $aktivitas = $this->where('nama', $nama)->first();
         return $aktivitas['id_aktivitas'];
     }
+
+    public function aktivitasNotChecked($aktivitasArray)
+    {
+        return $this->whereNotIn('id_aktivitas', $aktivitasArray)->findAll();
+    }
 }

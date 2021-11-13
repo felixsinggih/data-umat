@@ -1,11 +1,15 @@
 <?= $this->extend('admin/layout/template') ?>
 <?= $this->section('content') ?>
 
-<row>
-    <form action="/admin/anggota/update/<?= $anggota['id_anggota'] ?>" method="post">
-        <?= csrf_field(); ?>
+<form action="/admin/anggota/update/<?= $anggota['id_anggota'] ?>" method="post">
+    <?= csrf_field(); ?>
+
+    <row>
         <div class="card">
-            <div class="card-body">
+            <div class="card-header">
+                <h3 class="card-title">Data Individu</h3>
+            </div>
+            <div class="card-body pb-0">
                 <div class="form-group row">
                     <label for="nik" class="col-sm-3 col-form-label">Nomor Induk Kependudukan</label>
                     <div class="col-sm-9">
@@ -30,60 +34,6 @@
                         <input type="text" class="form-control <?= ($validation->hasError('nama_lengkap')) ? 'is-invalid' : ''; ?>" id="nama_lengkap" name="nama_lengkap" value="<?= (old('nama_lengkap')) ? old('nama_lengkap') : $anggota['nama_lengkap'] ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError('nama_lengkap'); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="tempat_baptis" class="col-sm-3 col-form-label">Tempat Baptis</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tempat_baptis')) ? 'is-invalid' : ''; ?>" id="tempat_baptis" name="tempat_baptis" value="<?= (old('tempat_baptis')) ? old('tempat_baptis') : $anggota['tempat_baptis'] ?>">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('tempat_baptis'); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="tgl_baptis" class="col-sm-3 col-form-label">Tanggal Baptis</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tgl_baptis')) ? 'is-invalid' : ''; ?>" id="tgl1" name="tgl_baptis" placeholder="YYYY-MM-DD" value="<?= (old('tgl_baptis')) ? old('tgl_baptis') : $anggota['tgl_baptis'] ?>">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('tgl_baptis'); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="tempat_krisma" class="col-sm-3 col-form-label">Tempat Krisma</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tempat_krisma')) ? 'is-invalid' : ''; ?>" id="tempat_krisma" name="tempat_krisma" value="<?= (old('tempat_krisma')) ? old('tempat_krisma') : $anggota['tempat_krisma'] ?>">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('tempat_krisma'); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="tgl_krisma" class="col-sm-3 col-form-label">Tanggal Krisma</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tgl_krisma')) ? 'is-invalid' : ''; ?>" id="tgl2" name="tgl_krisma" placeholder="YYYY-MM-DD" value="<?= (old('tgl_krisma')) ? old('tgl_krisma') : $anggota['tgl_krisma'] ?>">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('tgl_krisma'); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="tempat_menikah" class="col-sm-3 col-form-label">Tempat Menikah</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tempat_menikah')) ? 'is-invalid' : ''; ?>" id="tempat_menikah" name="tempat_menikah" value="<?= (old('tempat_menikah')) ? old('tempat_menikah') : $detPernikahan['tempat_menikah'] ?>">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('tempat_menikah'); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="tgl_menikah" class="col-sm-3 col-form-label">Tanggal Menikah</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tgl_menikah')) ? 'is-invalid' : ''; ?>" id="tgl3" name="tgl_menikah" placeholder="YYYY-MM-DD" value="<?= (old('tgl_menikah')) ? old('tgl_menikah') : $detPernikahan['tgl_menikah'] ?>">
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('tgl_menikah'); ?>
                         </div>
                     </div>
                 </div>
@@ -252,14 +202,161 @@
                         </div>
                     </div>
                 </div>
-                <div class="float-right">
-                    <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah anda yakin akan menyimpan data tersebut?');">Simpan</button>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Data Gerejawi</h3>
+            </div>
+            <div class="card-body pb-0">
+                <div class="form-group row">
+                    <label for="tempat_baptis" class="col-sm-3 col-form-label">Tempat Baptis</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control <?= ($validation->hasError('tempat_baptis')) ? 'is-invalid' : ''; ?>" id="tempat_baptis" name="tempat_baptis" value="<?= (old('tempat_baptis')) ? old('tempat_baptis') : $anggota['tempat_baptis'] ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('tempat_baptis'); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="tgl_baptis" class="col-sm-3 col-form-label">Tanggal Baptis</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control <?= ($validation->hasError('tgl_baptis')) ? 'is-invalid' : ''; ?>" id="tgl1" name="tgl_baptis" placeholder="YYYY-MM-DD" value="<?= (old('tgl_baptis')) ? old('tgl_baptis') : $anggota['tempat_baptis'] ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('tgl_baptis'); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="tempat_krisma" class="col-sm-3 col-form-label">Tempat Krisma</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control <?= ($validation->hasError('tempat_krisma')) ? 'is-invalid' : ''; ?>" id="tempat_krisma" name="tempat_krisma" value="<?= (old('tempat_krisma')) ? old('tempat_krisma') : $anggota['tempat_krisma'] ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('tempat_krisma'); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="tgl_krisma" class="col-sm-3 col-form-label">Tanggal Krisma</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control <?= ($validation->hasError('tgl_krisma')) ? 'is-invalid' : ''; ?>" id="tgl2" name="tgl_krisma" placeholder="YYYY-MM-DD" value="<?= (old('tgl_krisma')) ? old('tgl_krisma') : $anggota['tgl_krisma'] ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('tgl_krisma'); ?>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-    </form>
-</row>
+
+        <div class="card" id="hidden_div">
+            <div class="card-header">
+                <h3 class="card-title">Data Pernikahan</h3>
+            </div>
+            <div class="card-body pb-0">
+                <div class="form-group row">
+                    <label for="tempat_menikah" class="col-sm-3 col-form-label">Tempat Menikah</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control <?= ($validation->hasError('tempat_menikah')) ? 'is-invalid' : ''; ?>" id="tempat_menikah" name="tempat_menikah" value="<?= (old('tempat_menikah')) ? old('tempat_menikah') : $detPernikahan['tempat_menikah'] ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('tempat_menikah'); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="tgl_menikah" class="col-sm-3 col-form-label">Tanggal Menikah</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control <?= ($validation->hasError('tgl_menikah')) ? 'is-invalid' : ''; ?>" id="tgl3" name="tgl_menikah" placeholder="YYYY-MM-DD" value="<?= (old('tgl_menikah')) ? old('tgl_menikah') : $detPernikahan['tgl_menikah'] ?>">
+                        <div class="invalid-feedback">
+                            <?= $validation->getError('tgl_menikah'); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Kegiatan Masyarakat dan Gereja</h3>
+            </div>
+            <div class="card-body pb-0">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="aktivitas" class="col-form-label">Aktivitas Kemasyarakatan</label>
+                            <?php foreach ($detAktivitas as $data) : ?>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="aktivitasCheckbox<?= $data['id_aktivitas'] ?>" name="aktivitas[]" value="<?= $data['id_aktivitas'] ?>" checked>
+                                    <label for="aktivitasCheckbox<?= $data['id_aktivitas'] ?>" class="custom-control-label"><?= $data['nama'] ?></label>
+                                </div>
+                            <?php endforeach; ?>
+                            <?php foreach ($aktivitasNotCheck as $data) : ?>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="aktivitasCheckbox<?= $data['id_aktivitas'] ?>" name="aktivitas[]" value="<?= $data['id_aktivitas'] ?>">
+                                    <label for="aktivitasCheckbox<?= $data['id_aktivitas'] ?>" class="custom-control-label"><?= $data['nama'] ?></label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="kategorial" class="col-form-label">Kelompok Kategorial Gereja</label>
+                            <?php foreach ($detKategorial as $data) : ?>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="kategorialCheckbox<?= $data['id_kategorial'] ?>" name="kategorial[]" value="<?= $data['id_kategorial'] ?>" checked>
+                                    <label for="kategorialCheckbox<?= $data['id_kategorial'] ?>" class="custom-control-label"><?= $data['nama'] ?></label>
+                                </div>
+                            <?php endforeach; ?>
+                            <?php foreach ($kategorialNotCheck as $data) : ?>
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="kategorialCheckbox<?= $data['id_kategorial'] ?>" name="kategorial[]" value="<?= $data['id_kategorial'] ?>">
+                                    <label for="kategorialCheckbox<?= $data['id_kategorial'] ?>" class="custom-control-label"><?= $data['nama'] ?></label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </row>
+
+    <row>
+        <div class="form-group">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah anda yakin akan menyimpan data tersebut?');">Simpan</button>
+            </div>
+        </div>
+    </row>
+</form>
+
+<script>
+    window.onload = (event) => {
+        var textselected = document.getElementById("status_keluarga").value;
+        if (textselected == 'Ayah' || textselected == 'Ibu') {
+            $('#hidden_div').show();
+        } else {
+            $('#hidden_div').hide();
+        }
+    };
+
+    $(document).ready(function() {
+        $("#status_keluarga").change(function() {
+            var textselected = document.getElementById("status_keluarga").value;
+            if (textselected == 'Ayah' || textselected == 'Ibu') {
+                $('#hidden_div').show();
+            } else {
+                $('#hidden_div').hide();
+            }
+        });
+    });
+</script>
 
 <?= $this->endSection() ?>

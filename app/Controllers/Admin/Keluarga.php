@@ -79,6 +79,8 @@ class Keluarga extends BaseController
             'lingkungan' => $this->lingkunganModel->findAll(),
             'pendidikan' => $this->pendidikanModel->findAll(),
             'pekerjaan' => $this->pekerjaanModel->findAll(),
+            'aktivitas' => $this->aktivitasModel->findAll(),
+            'kategorial' => $this->kategorialModel->findAll(),
             'act'       => ['keluarga', 'tambah'],
             'validation' => \Config\Services::validation(),
         ];
@@ -144,6 +146,12 @@ class Keluarga extends BaseController
                     'required' => 'Jenis kelamin wajib diisi!'
                 ]
             ],
+            'status_keluarga' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Pilih status dalam keluarga!'
+                ]
+            ],
         ])) {
             return redirect()->to('/admin/keluarga/add')->withInput();
         }
@@ -179,6 +187,7 @@ class Keluarga extends BaseController
             'ibu_kandung'   => $this->request->getVar('ibu_kandung'),
             'tempat_tinggal' => $this->request->getVar('tempat_tinggal'),
             'telp'          => $this->request->getVar('telp'),
+            'is_head'       => 'Y'
         ];
 
         $pendidikan = [
@@ -197,18 +206,41 @@ class Keluarga extends BaseController
             'tgl_menikah'  => ($this->request->getVar('tgl_menikah') != '') ? $this->request->getVar('tgl_menikah') : null,
         ];
 
+        $aktivitas = array();
+        $aktivitasForm = $this->request->getPost('aktivitas');
+        if (!empty($aktivitasForm)) {
+            foreach ($aktivitasForm as $data) :
+                array_push($aktivitas, [
+                    'id_anggota' => $idAnggota,
+                    'id_aktivitas' => $data
+                ]);
+            endforeach;
+        }
+
+        $kategorial = array();
+        $kategorialForm = $this->request->getPost('kategorial');
+        if (!empty($kategorialForm)) {
+            foreach ($kategorialForm as $data) :
+                array_push($kategorial, [
+                    'id_anggota' => $idAnggota,
+                    'id_kategorial' => $data
+                ]);
+            endforeach;
+        }
+
         $this->db->transStart();
         $this->keluargaModel->insert($keluarga);
         $this->anggotaModel->insert($anggota);
 
-        if (!empty($pendidikan['id_pendidikan']))
-            $this->detPendidikanModel->insert($pendidikan);
+        if (!empty($pendidikan['id_pendidikan'])) $this->detPendidikanModel->insert($pendidikan);
 
-        if (!empty($pekerjaan['id_pekerjaan']))
-            $this->detPekerjaanModel->insert($pekerjaan);
+        if (!empty($pekerjaan['id_pekerjaan'])) $this->detPekerjaanModel->insert($pekerjaan);
 
-        if (!empty($pernikahan['tempat_menikah']) || !empty($pernikahan['tgl_menikah']))
-            $this->detPernikahanModel->insert($pernikahan);
+        if (!empty($pernikahan['tempat_menikah']) || !empty($pernikahan['tgl_menikah'])) $this->detPernikahanModel->insert($pernikahan);
+
+        if (!empty($aktivitasForm)) $this->detAktivitasModel->insertBatch($aktivitas);
+
+        if (!empty($kategorialForm)) $this->detKategorialModel->insertBatch($kategorial);
         $this->db->transComplete();
 
         if ($this->db->transStatus() == false) {

@@ -61,6 +61,8 @@ class Anggota extends BaseController
             'keluarga'  => $keluarga,
             'pendidikan' => $this->pendidikanModel->findAll(),
             'pekerjaan' => $this->pekerjaanModel->findAll(),
+            'aktivitas' => $this->aktivitasModel->findAll(),
+            'kategorial' => $this->kategorialModel->findAll(),
             'act'       => ['keluarga', 'lihat'],
             'validation' => \Config\Services::validation(),
         ];
@@ -86,6 +88,12 @@ class Anggota extends BaseController
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'Jenis kelamin wajib diisi!'
+                ]
+            ],
+            'status_keluarga' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Pilih status dalam keluarga!'
                 ]
             ],
         ])) {
@@ -130,17 +138,40 @@ class Anggota extends BaseController
             'tgl_menikah'  => ($this->request->getVar('tgl_menikah') != '') ? $this->request->getVar('tgl_menikah') : null,
         ];
 
+        $aktivitas = array();
+        $aktivitasForm = $this->request->getPost('aktivitas');
+        if (!empty($aktivitasForm)) {
+            foreach ($aktivitasForm as $data) :
+                array_push($aktivitas, [
+                    'id_anggota' => $idAnggota,
+                    'id_aktivitas' => $data
+                ]);
+            endforeach;
+        }
+
+        $kategorial = array();
+        $kategorialForm = $this->request->getPost('kategorial');
+        if (!empty($kategorialForm)) {
+            foreach ($kategorialForm as $data) :
+                array_push($kategorial, [
+                    'id_anggota' => $idAnggota,
+                    'id_kategorial' => $data
+                ]);
+            endforeach;
+        }
+
         $this->db->transStart();
         $this->anggotaModel->insert($anggota);
 
-        if (!empty($pendidikan['id_pendidikan']))
-            $this->detPendidikanModel->insert($pendidikan);
+        if (!empty($pendidikan['id_pendidikan'])) $this->detPendidikanModel->insert($pendidikan);
 
-        if (!empty($pekerjaan['id_pekerjaan']))
-            $this->detPekerjaanModel->insert($pekerjaan);
+        if (!empty($pekerjaan['id_pekerjaan'])) $this->detPekerjaanModel->insert($pekerjaan);
 
-        if (!empty($pernikahan['tempat_menikah']) || !empty($pernikahan['tgl_menikah']))
-            $this->detPernikahanModel->insert($pernikahan);
+        if (!empty($pernikahan['tempat_menikah']) || !empty($pernikahan['tgl_menikah'])) $this->detPernikahanModel->insert($pernikahan);
+
+        if (!empty($aktivitasForm)) $this->detAktivitasModel->insertBatch($aktivitas);
+
+        if (!empty($kategorialForm)) $this->detKategorialModel->insertBatch($kategorial);
         $this->db->transComplete();
 
         if ($this->db->transStatus() == false) {
@@ -155,17 +186,52 @@ class Anggota extends BaseController
     public function edit($idAnggota)
     {
         $anggota = $this->anggotaModel->find($idAnggota);
+
+        $detAktivitas = $this->detAktivitasModel->showAktivitas($anggota['id_anggota']);
+        $aktivitasArray = array();
+        if (!empty($detAktivitas)) {
+            foreach ($detAktivitas as $data) :
+                array_push($aktivitasArray, $data['id_aktivitas']);
+            endforeach;
+        }
+
+        if (empty($aktivitasArray)) {
+            $aktivitasNotCheck = $this->aktivitasModel->findAll();
+        } else {
+            $aktivitasNotCheck = $this->aktivitasModel->aktivitasNotChecked($aktivitasArray);
+        }
+
+        $detKategorial = $this->detKategorialModel->showKategorial($anggota['id_anggota']);
+        $kategorialArray = array();
+        if (!empty($detKategorial)) {
+            foreach ($detKategorial as $data) :
+                array_push($kategorialArray, $data['id_kategorial']);
+            endforeach;
+        }
+
+        if (empty($kategorialArray)) {
+            $kategorialNotCheck = $this->kategorialModel->findAll();
+        } else {
+            $kategorialNotCheck = $this->kategorialModel->kategorialNotChecked($kategorialArray);
+        }
+
         $data = [
-            'title'     => 'Edit Data Anggota Keluarga',
-            'anggota'   => $anggota,
-            'pendidikan' => $this->pendidikanModel->findAll(),
-            'pekerjaan' => $this->pekerjaanModel->findAll(),
+            'title'         => 'Edit Data Anggota Keluarga',
+            'anggota'       => $anggota,
+            'pendidikan'    => $this->pendidikanModel->findAll(),
+            'pekerjaan'     => $this->pekerjaanModel->findAll(),
+            'aktivitas'     => $this->aktivitasModel->findAll(),
+            'kategorial'    => $this->kategorialModel->findAll(),
             'detPendidikan' => $this->detPendidikanModel->cariPendidikan($anggota['id_anggota']),
-            'detPekerjaan' => $this->detPekerjaanModel->cariPekerjaan($anggota['id_anggota']),
+            'detPekerjaan'  => $this->detPekerjaanModel->cariPekerjaan($anggota['id_anggota']),
             'detPernikahan' => $this->detPernikahanModel->where('id_anggota', $idAnggota)->first(),
-            'detSekolah' => $this->detSekolahModel->where('id_anggota', $idAnggota)->first(),
-            'act'       => ['keluarga', 'lihat'],
-            'validation' => \Config\Services::validation(),
+            'detSekolah'    => $this->detSekolahModel->where('id_anggota', $idAnggota)->first(),
+            'detAktivitas'  => $detAktivitas,
+            'aktivitasNotCheck' => $aktivitasNotCheck,
+            'detKategorial' => $detKategorial,
+            'kategorialNotCheck' => $kategorialNotCheck,
+            'act'           => ['keluarga', 'lihat'],
+            'validation'    => \Config\Services::validation(),
         ];
         return view('admin/keluarga/anggota/edit', $data);
     }
@@ -231,6 +297,28 @@ class Anggota extends BaseController
             'tgl_menikah'  => ($this->request->getVar('tgl_menikah') != '') ? $this->request->getVar('tgl_menikah') : null,
         ];
 
+        $aktivitas = array();
+        $aktivitasForm = $this->request->getPost('aktivitas');
+        if (!empty($aktivitasForm)) {
+            foreach ($aktivitasForm as $akt) :
+                array_push($aktivitas, [
+                    'id_anggota' => $idAnggota,
+                    'id_aktivitas' => $akt
+                ]);
+            endforeach;
+        }
+
+        $kategorial = array();
+        $kategorialForm = $this->request->getPost('kategorial');
+        if (!empty($kategorialForm)) {
+            foreach ($kategorialForm as $kat) :
+                array_push($kategorial, [
+                    'id_anggota' => $idAnggota,
+                    'id_kategorial' => $kat
+                ]);
+            endforeach;
+        }
+
         $this->db->transStart();
         $this->anggotaModel->update($anggota['id_anggota'], $anggota);
 
@@ -260,6 +348,12 @@ class Anggota extends BaseController
                 $this->detPernikahanModel->update($pernikahan['id_anggota'], $pernikahan);
             }
         }
+
+        $this->detAktivitasModel->where('id_anggota', $data['id_anggota'])->delete();
+        if (!empty($aktivitasForm)) $this->detAktivitasModel->insertBatch($aktivitas);
+
+        $this->detKategorialModel->where('id_anggota', $data['id_anggota'])->delete();
+        if (!empty($kategorialForm)) $this->detKategorialModel->insertBatch($kategorial);
         $this->db->transComplete();
 
         if ($this->db->transStatus() == false) {
@@ -306,6 +400,8 @@ class Anggota extends BaseController
         $cekPekerjaan = $this->detPekerjaanModel->find($anggota['id_anggota']);
         $cekPernikahan = $this->detPernikahanModel->find($anggota['id_anggota']);
         $cekSekolah = $this->detSekolahModel->find($anggota['id_anggota']);
+        $cekAktivitas = $this->detAktivitasModel->where('id_anggota', $anggota['id_anggota'])->first();
+        $cekKategorial = $this->detKategorialModel->where('id_anggota', $anggota['id_anggota'])->first();
 
         $this->db->transStart();
         $this->anggotaModel->delete($anggota['id_anggota']);
@@ -313,6 +409,8 @@ class Anggota extends BaseController
         if (!empty($cekPekerjaan)) $this->detPekerjaanModel->delete($anggota['id_anggota']);
         if (!empty($cekPernikahan)) $this->detPernikahanModel->delete($anggota['id_anggota']);
         if (!empty($cekSekolah)) $this->detSekolahModel->delete($anggota['id_anggota']);
+        if (!empty($cekAktivitas)) $this->detAktivitasModel->where('id_anggota', $anggota['id_anggota'])->delete();
+        if (!empty($cekKategorial)) $this->detKategorialModel->where('id_anggota', $anggota['id_anggota'])->delete();
         $this->db->transComplete();
 
         if ($this->db->transStatus() == false) {

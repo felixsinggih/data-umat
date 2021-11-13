@@ -16,4 +16,9 @@ class KategorialModel extends Model
         $kategorial = $this->where('nama', $nama)->first();
         return $kategorial['id_kategorial'];
     }
+
+    public function kategorialNotChecked($kategorialArray)
+    {
+        return $this->whereNotIn('id_kategorial', $kategorialArray)->findAll();
+    }
 }
