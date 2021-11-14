@@ -1,0 +1,6 @@
+// VIEW UMUR
+CREATE view view_umur AS
+SELECT dsc_keluarga.id_lingkungan, dsc_keluarga.id_keluarga, dsc_anggota_keluarga.id_anggota, 
+dsc_anggota_keluarga.nama_lengkap, timestampdiff(year, dsc_anggota_keluarga.tgl_lahir, curdate()) AS umur 
+FROM dsc_anggota_keluarga, dsc_keluarga
+WHERE dsc_keluarga.id_keluarga = dsc_anggota_keluarga.id_keluarga

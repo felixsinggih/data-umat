@@ -49,10 +49,52 @@ class AnggotaModel extends Model
             ->findAll();
     }
 
+    // ** GAK KEPAKE
     public function hitungUmurUmat($operatorMin, $umurMin, $operatorMax, $umurMax)
     {
         return $this->select('count(timestampdiff(year, tgl_lahir, curdate())) as jumlah')
             ->where('timestampdiff(year, tgl_lahir, curdate()) ' . $operatorMin, $umurMin)
             ->where('timestampdiff(year, tgl_lahir, curdate()) ' . $operatorMax, $umurMax);
+    }
+
+    public function demografiUmur()
+    {
+        return $this->db->table('view_umur')->select('SUM(IF(umur BETWEEN 0 AND 12,1,0)) AS dua_belas, 
+        SUM(IF(umur BETWEEN 13 AND 18,1,0)) AS delapan_belas, 
+        SUM(IF(umur BETWEEN 19 AND 25,1,0)) AS dua_lima,
+        SUM(IF(umur BETWEEN 26 AND 35,1,0)) AS tiga_lima,
+        SUM(IF(umur BETWEEN 36 AND 45,1,0)) AS empat_lima,
+        SUM(IF(umur BETWEEN 46 AND 55,1,0)) AS lima_lima,
+        SUM(IF(umur BETWEEN 56 AND 65,1,0)) AS enam_lima,
+        SUM(IF(umur > 65,1,0)) AS enam_lima_keatas,
+        SUM(IF(umur IS null,1,0)) AS tidak_diketahui')->get()->getResultArray();
+    }
+
+    public function demografiUmurByLingkungan($idLingkungan)
+    {
+        return $this->db->table('view_umur')->select('SUM(IF(umur BETWEEN 0 AND 12,1,0)) AS dua_belas, 
+        SUM(IF(umur BETWEEN 13 AND 18,1,0)) AS delapan_belas, 
+        SUM(IF(umur BETWEEN 19 AND 25,1,0)) AS dua_lima,
+        SUM(IF(umur BETWEEN 26 AND 35,1,0)) AS tiga_lima,
+        SUM(IF(umur BETWEEN 36 AND 45,1,0)) AS empat_lima,
+        SUM(IF(umur BETWEEN 46 AND 55,1,0)) AS lima_lima,
+        SUM(IF(umur BETWEEN 56 AND 65,1,0)) AS enam_lima,
+        SUM(IF(umur > 65,1,0)) AS enam_lima_keatas,
+        SUM(IF(umur IS null,1,0)) AS tidak_diketahui')
+            ->where('id_lingkungan', $idLingkungan)->get()->getResultArray();
+    }
+
+    public function demografiDarah()
+    {
+        return $this->select('count(gol_darah) as total, gol_darah')
+            ->groupBy('gol_darah');
+    }
+
+    public function demografiDarahByLingkungan($idLingkungan)
+    {
+        return $this->select('count(dsc_anggota_keluarga.gol_darah) as total, dsc_anggota_keluarga.gol_darah')
+            ->join('dsc_keluarga as k', 'k.id_keluarga = dsc_anggota_keluarga.id_keluarga')
+            ->where('k.id_lingkungan', $idLingkungan)
+            ->groupBy('dsc_anggota_keluarga.gol_darah');
     }
 }

@@ -82,7 +82,7 @@
         <li class="nav-item has-treeview<?= ($act[0] == 'keluarga') ? ' menu-open' : ''; ?>">
             <a href="#" class="nav-link<?= ($act[0] == 'keluarga') ? ' active' : ''; ?>">
                 <i class="nav-icon fas fa-users"></i>
-                <p>Keluarga Katolik</p>
+                <p>Data Keluarga</p>
                 <i class="right fas fa-angle-left"></i>
             </a>
             <ul class="nav nav-treeview">

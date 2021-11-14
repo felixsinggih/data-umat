@@ -94,7 +94,7 @@ $routes->group('/admin', ['filter' => 'auth', 'filter' => 'authParoki'], functio
     $routes->post('anggota/update/(:segment)', 'Admin\Anggota::editData/$1');
     $routes->delete('anggota/delete/(:segment)', 'Admin\Anggota::delete/$1');
 
-    $routes->get('demografi', 'Admin\Demografi::index');
+    $routes->match(['get', 'post'], 'demografi', 'Admin\Demografi::index');
 });
 
 // ** ADMIN LINGKUNGAN
