@@ -31,12 +31,13 @@ $routes->setAutoRoute(false);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+$routes->get('/', 'Login::index', ['filter' => 'noauth']);
 $routes->get('/login', 'Login::index', ['filter' => 'noauth']);
 $routes->post('/signin', 'Login::signin', ['filter' => 'noauth']);
-$routes->get('/signout', 'Login::signout', ['filter' => 'auth']);
+$routes->get('/signout', 'Login::signout');
 
 // ** ADMIN PAROKI
-$routes->group('/admin', ['filter' => 'auth', 'filter' => 'authParoki'], function ($routes) {
+$routes->group('/admin', ['filter' => 'authParoki'], function ($routes) {
     $routes->get('', 'Admin\Dashboard::index');
     $routes->get('setting', 'Admin\Settings::index');
     $routes->post('setting/update', 'Admin\Settings::editDataParoki');
@@ -98,7 +99,7 @@ $routes->group('/admin', ['filter' => 'auth', 'filter' => 'authParoki'], functio
 });
 
 // ** ADMIN LINGKUNGAN
-$routes->group('/adling', ['filter' => 'auth', 'filter' => 'authLingkungan'], function ($routes) {
+$routes->group('/adling', ['filter' => 'authLingkungan'], function ($routes) {
     $routes->get('', 'AdminLingkungan\Dashboard::index');
 });
 

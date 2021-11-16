@@ -11,9 +11,14 @@ class AuthParoki implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         // Do something here
-        if (session()->get('role') != 'Paroki') {
-            session()->setflashdata('failed', 'Anda tidak memiliki akses!');
-            return redirect()->back();
+        if (!session()->get('isLogged')) {
+            session()->setflashdata('failed', 'Oopss... Silahkan log in terlebih dahulu!');
+            return redirect()->to(base_url('/login'));
+        } else {
+            if (session()->get('role') != 'Paroki') {
+                session()->setflashdata('failed', 'Anda tidak memiliki akses!');
+                return redirect()->back();
+            }
         }
     }
 

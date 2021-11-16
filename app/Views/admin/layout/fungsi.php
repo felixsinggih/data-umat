@@ -59,3 +59,9 @@ function datetime($tanggal)
     $q = explode(' ', $p[2]);
     return $q[0] . ' ' . $bulan[(int)$p[1]] . ' ' . $p[0] . ' ' . $q[1];
 }
+
+function ribuan($nominal)
+{
+    $rp = number_format($nominal, 0, ',', '.');
+    return $rp;
+}

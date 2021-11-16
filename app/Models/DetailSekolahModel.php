@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class DetailSekolahModel extends Model
 {
-    protected $table = 'dsc_detail_Sekolah';
+    protected $table = 'dsc_detail_sekolah';
     protected $primaryKey = 'id_anggota';
 
     protected $useTimestamps = true;
@@ -15,17 +15,17 @@ class DetailSekolahModel extends Model
 
     public function demografiSekolah()
     {
-        return $this->select('count(dsc_detail_Sekolah.satuan_pendidikan) as total, dsc_detail_Sekolah.satuan_pendidikan as nama')
-            ->join('dsc_anggota_keluarga as ak', 'ak.id_anggota = dsc_detail_Sekolah.id_anggota')
-            ->groupBy('dsc_detail_Sekolah.satuan_pendidikan');
+        return $this->select('count(dsc_detail_sekolah.satuan_pendidikan) as total, dsc_detail_sekolah.satuan_pendidikan as nama')
+            ->join('dsc_anggota_keluarga as ak', 'ak.id_anggota = dsc_detail_sekolah.id_anggota')
+            ->groupBy('dsc_detail_sekolah.satuan_pendidikan');
     }
 
     public function demografiSekolahByLingkungan($idLingkungan)
     {
-        return $this->select('count(dsc_detail_Sekolah.satuan_pendidikan) as total, dsc_detail_Sekolah.satuan_pendidikan as nama')
-            ->join('dsc_anggota_keluarga as ak', 'ak.id_anggota = dsc_detail_Sekolah.id_anggota')
+        return $this->select('count(dsc_detail_sekolah.satuan_pendidikan) as total, dsc_detail_sekolah.satuan_pendidikan as nama')
+            ->join('dsc_anggota_keluarga as ak', 'ak.id_anggota = dsc_detail_sekolah.id_anggota')
             ->join('dsc_keluarga as k', 'k.id_keluarga = ak.id_keluarga')
             ->where('k.id_lingkungan', $idLingkungan)
-            ->groupBy('dsc_detail_Sekolah.satuan_pendidikan');
+            ->groupBy('dsc_detail_sekolah.satuan_pendidikan');
     }
 }

@@ -1,5 +1,6 @@
 <?= $this->extend('admin/layout/template'); ?>
 <?= $this->section('content'); ?>
+<?= $this->include('admin/layout/fungsi') ?>
 
 <?php
 $jmlKeluargaValue = array();
@@ -113,14 +114,20 @@ $totalJmlSekolah = array_sum($jmlSekolahValue);
                     </h3>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <?php if (empty($jmlKeluarga)) : ?>
                     <p class="lead">Data tidak tersedia.</p>
                 <?php else : ?>
-                    <div class="chart">
+                    <div class="d-flex">
+                        <p class="d-flex flex-column">
+                            <span class="text-bold text-lg"><?= ribuan($totalJmlKeluarga) ?></span>
+                            <span>Total Keluarga</span>
+                        </p>
+                    </div>
+                    <!-- /.d-flex  -->
+                    <div class="position-relative mb-4">
                         <canvas id="chartLingkungan" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
                     </div>
-                    <p class="lead">Total Keluarga <?= $totalJmlKeluarga ?></p>
                 <?php endif; ?>
             </div>
         </div>
@@ -135,14 +142,20 @@ $totalJmlSekolah = array_sum($jmlSekolahValue);
                     </h3>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <?php if (empty($jmlUmat)) : ?>
                     <p class="lead">Data tidak tersedia.</p>
                 <?php else : ?>
-                    <div class="chart">
+                    <div class="d-flex">
+                        <p class="d-flex flex-column">
+                            <span class="text-bold text-lg"><?= ribuan($totalJmlUmat) ?></span>
+                            <span>Total Umat</span>
+                        </p>
+                    </div>
+                    <!-- /.d-flex  -->
+                    <div class="position-relative mb-4">
                         <canvas id="chartUmat" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
                     </div>
-                    <p class="lead">Total Umat <?= $totalJmlUmat ?></p>
                 <?php endif; ?>
             </div>
         </div>
@@ -157,14 +170,20 @@ $totalJmlSekolah = array_sum($jmlSekolahValue);
                     </h3>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <?php if (empty($demoUmur[0]['dua_belas']) && empty($demoUmur[0]['delapan_belas']) && empty($demoUmur[0]['dua_lima']) && empty($demoUmur[0]['tiga_lima']) && empty($demoUmur[0]['empat_lima']) && empty($demoUmur[0]['lima_lima']) && empty($demoUmur[0]['enam_lima']) && empty($demoUmur[0]['enam_lima_keatas'])) : ?>
                     <p class="lead">Data tidak tersedia.</p>
                 <?php else : ?>
-                    <div class="chart">
+                    <div class="d-flex">
+                        <p class="d-flex flex-column">
+                            <span class="text-bold text-lg"><?= ribuan($totalUmur) ?></span>
+                            <span>Total Data</span>
+                        </p>
+                    </div>
+                    <!-- /.d-flex  -->
+                    <div class="position-relative mb-4">
                         <canvas id="chartUmur" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
                     </div>
-                    <p class="lead">Total Data <?= $totalUmur ?></p>
                 <?php endif; ?>
             </div>
         </div>
@@ -179,14 +198,20 @@ $totalJmlSekolah = array_sum($jmlSekolahValue);
                     </h3>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <?php if (empty($demoDarah)) : ?>
                     <p class="lead">Data tidak tersedia.</p>
                 <?php else : ?>
-                    <div class="chart">
+                    <div class="d-flex">
+                        <p class="d-flex flex-column">
+                            <span class="text-bold text-lg"><?= ribuan($totalJmlDarah) ?></span>
+                            <span>Total Data</span>
+                        </p>
+                    </div>
+                    <!-- /.d-flex  -->
+                    <div class="position-relative mb-4">
                         <canvas id="chartDarah" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
                     </div>
-                    <p class="lead">Total Data <?= $totalJmlDarah ?></p>
                 <?php endif; ?>
             </div>
         </div>
@@ -201,14 +226,20 @@ $totalJmlSekolah = array_sum($jmlSekolahValue);
                     </h3>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <?php if (empty($demoPekerjaan)) : ?>
                     <p class="lead">Data tidak tersedia.</p>
                 <?php else : ?>
-                    <div class="chart">
+                    <div class="d-flex">
+                        <p class="d-flex flex-column">
+                            <span class="text-bold text-lg"><?= ribuan($totalJmlPekerjaan) ?></span>
+                            <span>Total Data</span>
+                        </p>
+                    </div>
+                    <!-- /.d-flex  -->
+                    <div class="position-relative mb-4">
                         <canvas id="chartKerja" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
                     </div>
-                    <p class="lead">Total Data <?= $totalJmlPekerjaan ?></p>
                 <?php endif; ?>
             </div>
         </div>
@@ -223,14 +254,20 @@ $totalJmlSekolah = array_sum($jmlSekolahValue);
                     </h3>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <?php if (empty($demoPendidikan)) : ?>
                     <p class="lead">Data tidak tersedia.</p>
                 <?php else : ?>
-                    <div class="chart">
+                    <div class="d-flex">
+                        <p class="d-flex flex-column">
+                            <span class="text-bold text-lg"><?= ribuan($totalJmlPendidikan) ?></span>
+                            <span>Total Data</span>
+                        </p>
+                    </div>
+                    <!-- /.d-flex  -->
+                    <div class="position-relative mb-4">
                         <canvas id="chartPendidikan" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
                     </div>
-                    <p class="lead">Total Data <?= $totalJmlPendidikan ?></p>
                 <?php endif; ?>
             </div>
         </div>
@@ -245,14 +282,20 @@ $totalJmlSekolah = array_sum($jmlSekolahValue);
                     </h3>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <?php if (empty($demoSekolah)) : ?>
                     <p class="lead">Data tidak tersedia.</p>
                 <?php else : ?>
-                    <div class="chart">
+                    <div class="d-flex">
+                        <p class="d-flex flex-column">
+                            <span class="text-bold text-lg"><?= ribuan($totalJmlSekolah) ?></span>
+                            <span>Total Data</span>
+                        </p>
+                    </div>
+                    <!-- /.d-flex  -->
+                    <div class="position-relative mb-4">
                         <canvas id="chartSekolah" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
                     </div>
-                    <p class="lead">Total Data <?= $totalJmlSekolah ?></p>
                 <?php endif; ?>
             </div>
         </div>

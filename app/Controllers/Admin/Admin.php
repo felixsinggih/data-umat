@@ -71,10 +71,11 @@ class Admin extends BaseController
                 ]
             ],
             'username' => [
-                'rules' => 'required|is_unique[dsc_users.username]',
+                'rules' => 'required|is_unique[dsc_users.username]|min_length[8]|alpha_numeric',
                 'errors' => [
                     'required' => 'Username wajib diisi!',
-                    'is_unique' => 'Usename sudah digunakan!'
+                    'is_unique' => 'Usename sudah digunakan!',
+                    'min_length' => 'Panjang minimal Username adalah 8 karakter!',
                 ]
             ],
             'status' => [
@@ -195,6 +196,17 @@ class Admin extends BaseController
                 'status' => $this->request->getVar('status'),
             ];
         } else {
+            if (!$this->validate([
+                'password' => [
+                    'rules' => 'min_length[8]|alpha_dash',
+                    'errors' => [
+                        'min_length' => 'Panjang minimal Password adalah 8 karakter!'
+                    ]
+                ],
+            ])) {
+                return redirect()->to('/admin/paroki/edit/' . $idUser)->withInput();
+            }
+
             $pwHash = password_hash($password, PASSWORD_DEFAULT);
             $admin = [
                 'uid'   => $data['uid'],
