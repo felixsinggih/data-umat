@@ -19,12 +19,12 @@
 
 <body class="hold-transition login-page">
     <div class="login-box">
+        <div class="login-logo">
+            <a href="/"><b>Paroki St. Stephanus Cilacap</b></a>
+        </div>
         <!-- /.login-logo -->
-        <div class="card card-outline card-primary">
-            <div class="card-header text-center">
-                <a href="../../index2.html" class="h1">Paroki St. Stephanus Cilacap</a>
-            </div>
-            <div class="card-body">
+        <div class="card">
+            <div class="card-body login-card-body">
                 <p class="login-box-msg">Sign in to start your session</p>
 
                 <div class="col-12">

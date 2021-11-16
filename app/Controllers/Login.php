@@ -69,7 +69,7 @@ class Login extends BaseController
         session()->remove('uid');
         session()->remove('name');
         session()->remove('role');
-        session()->remove('isFirtst');
+        session()->remove('isFirst');
         session()->remove('isLogged');
         session()->remove('lingkungan');
         return redirect()->to(base_url('login'));

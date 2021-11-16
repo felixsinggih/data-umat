@@ -3,7 +3,7 @@
         <img src="/upload/img/profile.png" class="img-circle elevation-2" alt="User Image">
     </div>
     <div class="info">
-        <a href="#" class="d-block">
+        <a href="/user/profile" class="d-block">
             <?php $nama = explode(' ', session()->get('name'));
             echo $nama[0] ?>
         </a>

@@ -36,6 +36,19 @@ $routes->get('/login', 'Login::index', ['filter' => 'noauth']);
 $routes->post('/signin', 'Login::signin', ['filter' => 'noauth']);
 $routes->get('/signout', 'Login::signout');
 
+// ** PROFILE ADMIN PAROKI & LINGKUNGAN
+$routes->group('/user', ['filter' => 'auth'], function ($routes) {
+    $routes->get('profile', 'User\Admin::index');
+    $routes->get('profile/edit', 'User\Admin::edit');
+    $routes->post('profile/update', 'User\Admin::editData');
+
+    $routes->get('password', 'User\Admin::password');
+    $routes->post('password/update', 'User\Admin::editPassword');
+
+    $routes->get('security', 'User\Admin::first');
+    $routes->post('security/password', 'User\Admin::passwordLogin');
+});
+
 // ** ADMIN PAROKI
 $routes->group('/admin', ['filter' => 'authParoki'], function ($routes) {
     $routes->get('', 'Admin\Dashboard::index');
