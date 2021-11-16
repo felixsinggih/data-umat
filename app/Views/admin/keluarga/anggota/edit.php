@@ -13,9 +13,10 @@
                 <div class="form-group row">
                     <label for="nik" class="col-sm-3 col-form-label">Nomor Induk Kependudukan</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('nik')) ? 'is-invalid' : ''; ?>" id="nik" name="nik" value="<?= (old('nik')) ? old('nik') : $anggota['nik'] ?>">
+                        <input type="text" class="form-control <?= ($validation->hasError('nik')) ? 'is-invalid' : ''; ?><?= (session()->getflashdata('nik')) ? 'is-invalid' : ''; ?>" id="nik" name="nik" value="<?= (old('nik')) ? old('nik') : $anggota['nik'] ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError('nik'); ?>
+                            <?= session()->getflashdata('nik'); ?>
                         </div>
                     </div>
                 </div>
@@ -224,7 +225,7 @@
                 <div class="form-group row">
                     <label for="tgl_baptis" class="col-sm-3 col-form-label">Tanggal Baptis</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tgl_baptis')) ? 'is-invalid' : ''; ?>" id="tgl1" name="tgl_baptis" placeholder="YYYY-MM-DD" value="<?= (old('tgl_baptis')) ? old('tgl_baptis') : $anggota['tempat_baptis'] ?>">
+                        <input type="text" class="form-control <?= ($validation->hasError('tgl_baptis')) ? 'is-invalid' : ''; ?>" id="tgl1" name="tgl_baptis" placeholder="YYYY-MM-DD" value="<?= (old('tgl_baptis')) ? old('tgl_baptis') : $anggota['tgl_baptis'] ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError('tgl_baptis'); ?>
                         </div>

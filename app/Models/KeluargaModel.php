@@ -50,4 +50,19 @@ class KeluargaModel extends Model
                 ->where('ak.is_head', 'Y');
         }
     }
+
+    public function dataKeluarga($idKeluarga)
+    {
+        return $this
+            ->join('dsc_lingkungan as l', 'l.id_lingkungan = dsc_keluarga.id_lingkungan')
+            ->join('dsc_anggota_keluarga as ak', 'ak.id_keluarga = dsc_keluarga.id_keluarga')
+            ->where('ak.is_head', 'Y')
+            ->like('dsc_keluarga.id_keluarga', $idKeluarga);
+    }
+
+    public function cekKkEdit($kk, $idKeluarga)
+    {
+        return $this->where('no_kk', $kk)
+            ->where('id_keluarga !=', $idKeluarga);
+    }
 }

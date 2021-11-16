@@ -24,9 +24,10 @@
                 <div class="form-group row">
                     <label for="no_kk" class="col-sm-3 col-form-label">Nomor Kartu Keluarga</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('no_kk')) ? 'is-invalid' : ''; ?>" id="no_kk" name="no_kk" value="<?= (old('no_kk')) ? old('no_kk') : $keluarga['no_kk'] ?>">
+                        <input type="text" class="form-control <?= ($validation->hasError('no_kk')) ? 'is-invalid' : ''; ?><?= (session()->getflashdata('kk')) ? 'is-invalid' : ''; ?>" id="no_kk" name="no_kk" value="<?= (old('no_kk')) ? old('no_kk') : $keluarga['no_kk'] ?>">
                         <div class="invalid-feedback">
                             <?= $validation->getError('no_kk'); ?>
+                            <?= session()->getflashdata('kk'); ?>
                         </div>
                     </div>
                 </div>

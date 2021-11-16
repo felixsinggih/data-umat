@@ -73,9 +73,12 @@ class Anggota extends BaseController
     {
         if (!$this->validate([
             'nik' => [
-                'rules' => 'required',
+                'rules' => 'required|numeric|is_unique[dsc_anggota_keluarga.nik]|exact_length[16]',
                 'errors' => [
-                    'required' => 'Nomor Induk Kependudukan wajib diisi!'
+                    'required' => 'Nomor Induk Kependudukan wajib diisi!',
+                    'numeric' => 'Nomor Induk Kependudukan hanya dapat diisi dengan angka!',
+                    'is_unique' => 'Nomor Induk Kependudukan sudah digunakan!',
+                    'exact_length' => 'Panjang Normor Induk Kependudukan harus 16!'
                 ]
             ],
             'nama_lengkap' => [
@@ -240,9 +243,11 @@ class Anggota extends BaseController
     {
         if (!$this->validate([
             'nik' => [
-                'rules' => 'required',
+                'rules' => 'required|numeric|exact_length[16]',
                 'errors' => [
-                    'required' => 'Nomor Induk Kependudukan wajib diisi!'
+                    'required' => 'Nomor Induk Kependudukan wajib diisi!',
+                    'numeric' => 'Nomor Induk Kependudukan hanya dapat diisi dengan angka!',
+                    'exact_length' => 'Panjang Normor Induk Kependudukan harus 16!'
                 ]
             ],
             'nama_lengkap' => [
@@ -260,7 +265,15 @@ class Anggota extends BaseController
         ])) {
             return redirect()->to('/admin/anggota/edit/' . $idAnggota)->withInput();
         }
+
         $data = $this->anggotaModel->find($idAnggota);
+        $nik = trim($this->request->getVar('nik'));
+        $cek = $this->anggotaModel->cekNikEdit($nik, $data['id_anggota'])->first();
+        if (!empty($cek)) {
+            session()->setflashdata('nik', 'Nomor Induk Kependudukan sudah digunakan.');
+            return redirect()->to('/admin/anggota/edit/' . $data['id_anggota'])->withInput();
+        }
+
         $anggota = [
             'id_anggota'    => $data['id_anggota'],
             'nik'           => $this->request->getVar('nik'),

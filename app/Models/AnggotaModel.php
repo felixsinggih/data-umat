@@ -97,4 +97,10 @@ class AnggotaModel extends Model
             ->where('k.id_lingkungan', $idLingkungan)
             ->groupBy('dsc_anggota_keluarga.gol_darah');
     }
+
+    public function cekNikEdit($nik, $idAnggota)
+    {
+        return $this->where('nik', $nik)
+            ->where('id_anggota !=', $idAnggota);
+    }
 }

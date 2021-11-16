@@ -97,10 +97,12 @@ class Keluarga extends BaseController
                 ]
             ],
             'no_kk' => [
-                'rules' => 'required|numeric',
+                'rules' => 'required|numeric|is_unique[dsc_keluarga.no_kk]|exact_length[16]',
                 'errors' => [
                     'required' => 'Nomor Kartu Keluarga wajib diisi!',
-                    'numeric' => 'Nomor Kartu Keluarga hanya dapat diisi dengan angka!'
+                    'numeric' => 'Nomor Kartu Keluarga hanya dapat diisi dengan angka!',
+                    'is_unique' => 'Nomor Kartu Keluarga sudah digunakan!',
+                    'exact_length' => 'Panjang Normor Kartu Keluarga harus 16!'
                 ]
             ],
             'alamat' => [
@@ -128,10 +130,12 @@ class Keluarga extends BaseController
                 ]
             ],
             'nik' => [
-                'rules' => 'required|numeric',
+                'rules' => 'required|numeric|is_unique[dsc_anggota_keluarga.nik]|exact_length[16]',
                 'errors' => [
                     'required' => 'Nomor Induk Kependudukan wajib diisi!',
-                    'numeric' => 'Nomor Induk Kependudukan hanya dapat diisi dengan angka!'
+                    'numeric' => 'Nomor Induk Kependudukan hanya dapat diisi dengan angka!',
+                    'is_unique' => 'Nomor Induk Kependudukan sudah digunakan!',
+                    'exact_length' => 'Panjang Normor Induk Kependudukan harus 16!'
                 ]
             ],
             'nama_lengkap' => [
@@ -282,10 +286,11 @@ class Keluarga extends BaseController
                 ]
             ],
             'no_kk' => [
-                'rules' => 'required|numeric',
+                'rules' => 'required|numeric|exact_length[16]',
                 'errors' => [
                     'required' => 'Nomor Kartu Keluarga wajib diisi!',
-                    'numeric' => 'Nomor Kartu Keluarga hanya dapat diisi dengan angka!'
+                    'numeric' => 'Nomor Kartu Keluarga hanya dapat diisi dengan angka!',
+                    'exact_length' => 'Panjang Normor Kartu Keluarga harus 16!'
                 ]
             ],
             'alamat' => [
@@ -317,6 +322,14 @@ class Keluarga extends BaseController
         }
 
         $data = $this->keluargaModel->find($idKeluarga);
+
+        $kk = trim($this->request->getVar('no_kk'));
+        $cek = $this->keluargaModel->cekKkEdit($kk, $data['id_keluarga'])->first();
+        if (!empty($cek)) {
+            session()->setflashdata('kk', 'Nomor Kartu Keluarga sudah digunakan.');
+            return redirect()->to('/admin/keluarga/edit/' . $data['id_keluarga'])->withInput();
+        }
+
         $keluarga = [
             'id_lingkungan' => $this->request->getVar('id_lingkungan'),
             'id_keluarga'   => $data['id_keluarga'],
@@ -343,7 +356,7 @@ class Keluarga extends BaseController
     public function detail($idKeluarga = false)
     {
 
-        $keluarga = $this->keluargaModel->find($idKeluarga);
+        $keluarga = $this->keluargaModel->dataKeluarga($idKeluarga)->first();
         if (empty($keluarga)) {
             session()->setflashdata('failed', 'Data tidak ditemukan.');
             return redirect()->to('/admin/keluarga');
@@ -352,7 +365,6 @@ class Keluarga extends BaseController
         $data = [
             'title'     => 'Detail Keluarga',
             'keluarga'  => $keluarga,
-            'lingkungan' =>  $this->lingkunganModel->find($keluarga['id_lingkungan']),
             'anggota'   => $this->anggotaModel->dataAnggota($idKeluarga),
             'act'       => ['keluarga', 'lihat'],
         ];

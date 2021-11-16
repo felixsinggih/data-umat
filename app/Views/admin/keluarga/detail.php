@@ -15,11 +15,15 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Kepala Keluaraga</label>
-                        <p class="col-sm-8 col-form-label"><?= $anggota[0]['nama_lengkap'] ?></p>
+                        <p class="col-sm-8 col-form-label"><?= $keluarga['no_kk'] ?></p>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Kepala Keluaraga</label>
+                        <p class="col-sm-8 col-form-label"><?= $keluarga['nama_lengkap'] ?></p>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Lingkungan / Stasi</label>
-                        <p class="col-sm-8 col-form-label"><?= $lingkungan['nama'] ?></p>
+                        <p class="col-sm-8 col-form-label"><?= $keluarga['nama'] ?></p>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Alamat</label>
@@ -27,6 +31,10 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">RT/RW</label>
+                        <p class="col-sm-8 col-form-label"><?= $keluarga['rt_rw'] ?></p>
+                    </div>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Desa / Kelurahan</label>
                         <p class="col-sm-8 col-form-label"><?= $keluarga['kelurahan'] ?></p>
@@ -37,7 +45,7 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Telp</label>
-                        <p class="col-sm-8 col-form-label"><?= $anggota[0]['telp'] ?></p>
+                        <p class="col-sm-8 col-form-label"><?= $keluarga['telp'] ?></p>
                     </div>
                 </div>
             </div>

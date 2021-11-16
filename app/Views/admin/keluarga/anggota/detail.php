@@ -87,7 +87,7 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Tanggal Lahir</label>
-                        <p class="col-sm-8 col-form-label"><?= (!empty($anggota['tgl_lahir'])) ? tanggallengkap($anggota['tgl_lahir']) : '-' ?></p>
+                        <p class="col-sm-8 col-form-label"><?= (!empty($anggota['tgl_lahir'])) ? tanggalLengkap($anggota['tgl_lahir']) : '-' ?></p>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Golongan Darah</label>
@@ -156,7 +156,7 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Tanggal Baptis</label>
-                        <p class="col-sm-8 col-form-label"><?= (!empty($anggota['tgl_baptis'])) ? tanggallengkap($anggota['tgl_baptis']) : '-' ?></p>
+                        <p class="col-sm-8 col-form-label"><?= (!empty($anggota['tgl_baptis'])) ? tanggalLengkap($anggota['tgl_baptis']) : '-' ?></p>
                     </div>
                 </div>
                 <!-- /.col -->
@@ -168,7 +168,7 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Tanggal Krisma</label>
-                        <p class="col-sm-8 col-form-label"><?= (!empty($anggota['tgl_krisma'])) ? tanggallengkap($anggota['tgl_krisma']) : '-' ?></p>
+                        <p class="col-sm-8 col-form-label"><?= (!empty($anggota['tgl_krisma'])) ? tanggalLengkap($anggota['tgl_krisma']) : '-' ?></p>
                     </div>
                 </div>
                 <!-- /.col -->
@@ -196,7 +196,7 @@
                     <div class="col-lg-6 col-md-12">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Tanggal Menikah</label>
-                            <p class="col-sm-8 col-form-label"><?= (!empty($pernikahan['tgl_menikah'])) ? tanggallengkap($pernikahan['tgl_menikah']) : '-' ?></p>
+                            <p class="col-sm-8 col-form-label"><?= (!empty($pernikahan['tgl_menikah'])) ? tanggalLengkap($pernikahan['tgl_menikah']) : '-' ?></p>
                         </div>
                     </div>
                 </div>
