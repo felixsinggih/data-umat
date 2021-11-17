@@ -60,7 +60,7 @@
                         <td rowspan="2" style="width: 100px;">Status Dalam Keluarga</td>
                         <td rowspan="2">Nama Orang Tua</td>
                         <td rowspan="2">Pendidikan</td>
-                        <td rowspan="2" style="width: 130px;">Aksi</td>
+                        <td rowspan="2" style="width: 170px;">Aksi</td>
                     </tr>
                     <tr>
                         <td>Tempat</td>
@@ -99,6 +99,13 @@
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda yakin akan menghapus data tersebut?');"><i class="fas fa-trash-alt"></i></button>
                                 </form>
+                                <?php if ($data['is_head'] != 'Y') : ?>
+                                    <form action="/admin/anggota/head/<?= $data['id_keluarga'] ?>" method="post" class="d-inline">
+                                        <?= csrf_field(); ?>
+                                        <input type="hidden" name="id_anggota" value="<?= $data['id_anggota'] ?>">
+                                        <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Pindahkan status kepala keluarga ke <?= $data["nama_lengkap"] ?>?');"><i class="fas fa-house-user"></i></button>
+                                    </form>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php $i++;

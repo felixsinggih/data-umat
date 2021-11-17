@@ -106,6 +106,7 @@ $routes->group('/admin', ['filter' => 'authParoki'], function ($routes) {
     $routes->post('anggota/save/(:segment)', 'Admin\Anggota::addData/$1');
     $routes->get('anggota/edit/(:segment)', 'Admin\Anggota::edit/$1');
     $routes->post('anggota/update/(:segment)', 'Admin\Anggota::editData/$1');
+    $routes->post('anggota/head/(:segment)', 'Admin\Anggota::kepalaKeluarga/$1');
     $routes->delete('anggota/delete/(:segment)', 'Admin\Anggota::delete/$1');
 
     $routes->match(['get', 'post'], 'demografi', 'Admin\Demografi::index');
@@ -127,6 +128,7 @@ $routes->group('/lingkungan', ['filter' => 'authLingkungan'], function ($routes)
     $routes->post('anggota/save/(:segment)', 'AdminLingkungan\Anggota::addData/$1');
     $routes->get('anggota/edit/(:segment)', 'AdminLingkungan\Anggota::edit/$1');
     $routes->post('anggota/update/(:segment)', 'AdminLingkungan\Anggota::editData/$1');
+    $routes->post('anggota/head/(:segment)', 'AdminLingkungan\Anggota::kepalaKeluarga/$1');
     $routes->delete('anggota/delete/(:segment)', 'AdminLingkungan\Anggota::delete/$1');
 
     $routes->get('demografi', 'AdminLingkungan\Demografi::index');

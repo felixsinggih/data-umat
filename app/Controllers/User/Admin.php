@@ -194,7 +194,7 @@ class Admin extends BaseController
         } elseif ($this->db->transStatus() == true) {
             session()->setflashdata('success', 'Password anda berhasil diubah.');
             if (session()->get('role') == 'Paroki') return redirect()->to('/admin');
-            elseif (session()->get('role') == 'Lingkungan') return redirect()->to('/adling');
+            elseif (session()->get('role') == 'Lingkungan') return redirect()->to('/lingkungan');
         }
     }
 }

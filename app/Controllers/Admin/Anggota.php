@@ -408,6 +408,12 @@ class Anggota extends BaseController
     public function delete($idAnggota)
     {
         $anggota = $this->anggotaModel->find($idAnggota);
+        $keluarga = $this->anggotaModel->where('id_keluarga', $anggota['id_keluarga'])->findAll();
+
+        if (count($keluarga) > 1 && $anggota['is_head'] == 'Y') {
+            session()->setflashdata('failed', 'Tidak dapat menghapus data kepala keluarga. Silahkan pindahakan status kepala keluarga ke anggota keluarga lain. Anda hanya dapat menghapus data kepala keluarga, jika hanya tersisa 1 anggota anggota.');
+            return redirect()->to('/admin/keluarga/' . $anggota['id_keluarga']);
+        }
 
         $cekPendidikan = $this->detPendidikanModel->find($anggota['id_anggota']);
         $cekPekerjaan = $this->detPekerjaanModel->find($anggota['id_anggota']);
@@ -417,21 +423,72 @@ class Anggota extends BaseController
         $cekKategorial = $this->detKategorialModel->where('id_anggota', $anggota['id_anggota'])->first();
 
         $this->db->transStart();
-        $this->anggotaModel->delete($anggota['id_anggota']);
-        if (!empty($cekPendidikan)) $this->detPendidikanModel->delete($anggota['id_anggota']);
-        if (!empty($cekPekerjaan)) $this->detPekerjaanModel->delete($anggota['id_anggota']);
-        if (!empty($cekPernikahan)) $this->detPernikahanModel->delete($anggota['id_anggota']);
-        if (!empty($cekSekolah)) $this->detSekolahModel->delete($anggota['id_anggota']);
-        if (!empty($cekAktivitas)) $this->detAktivitasModel->where('id_anggota', $anggota['id_anggota'])->delete();
-        if (!empty($cekKategorial)) $this->detKategorialModel->where('id_anggota', $anggota['id_anggota'])->delete();
+        if ($anggota['is_head'] == 'Y') {
+            if (!empty($cekPendidikan)) $this->detPendidikanModel->delete($anggota['id_anggota']);
+            if (!empty($cekPekerjaan)) $this->detPekerjaanModel->delete($anggota['id_anggota']);
+            if (!empty($cekPernikahan)) $this->detPernikahanModel->delete($anggota['id_anggota']);
+            if (!empty($cekSekolah)) $this->detSekolahModel->delete($anggota['id_anggota']);
+            if (!empty($cekAktivitas)) $this->detAktivitasModel->where('id_anggota', $anggota['id_anggota'])->delete();
+            if (!empty($cekKategorial)) $this->detKategorialModel->where('id_anggota', $anggota['id_anggota'])->delete();
+            $this->anggotaModel->delete($anggota['id_anggota']);
+            $this->keluargaModel->delete($anggota['id_keluarga']);
+        } else {
+            if (!empty($cekPendidikan)) $this->detPendidikanModel->delete($anggota['id_anggota']);
+            if (!empty($cekPekerjaan)) $this->detPekerjaanModel->delete($anggota['id_anggota']);
+            if (!empty($cekPernikahan)) $this->detPernikahanModel->delete($anggota['id_anggota']);
+            if (!empty($cekSekolah)) $this->detSekolahModel->delete($anggota['id_anggota']);
+            if (!empty($cekAktivitas)) $this->detAktivitasModel->where('id_anggota', $anggota['id_anggota'])->delete();
+            if (!empty($cekKategorial)) $this->detKategorialModel->where('id_anggota', $anggota['id_anggota'])->delete();
+            $this->anggotaModel->delete($anggota['id_anggota']);
+        }
         $this->db->transComplete();
 
         if ($this->db->transStatus() == false) {
             session()->setflashdata('failed', 'Data anggota keluarga gagal dihapus.');
             return redirect()->to('/admin/keluarga/' . $anggota['id_keluarga']);
         } elseif ($this->db->transStatus() == true) {
-            session()->setflashdata('success', 'Data anggota keluarga berhasil dihapus.');
+            if ($anggota['is_head'] == 'Y') {
+                session()->setflashdata('success', 'Data keluarga berhasil dihapus.');
+                return redirect()->to('/admin/keluarga');
+            } else {
+                session()->setflashdata('success', 'Data anggota keluarga berhasil dihapus.');
+                return redirect()->to('/admin/keluarga/' . $anggota['id_keluarga']);
+            }
+        }
+    }
+
+    public function kepalaKeluarga($idKeluarga)
+    {
+        $idAnggota = $this->request->getVar('id_anggota');
+        $anggota = $this->anggotaModel->find($idAnggota);
+        if ($anggota['is_head'] == 'Y') {
+            session()->setflashdata('failed', 'Status kepala keluarga tidak berubah. Silahkan pilih anggota keluarga lain.');
             return redirect()->to('/admin/keluarga/' . $anggota['id_keluarga']);
+        } else {
+            $kepalaKeluarga = $this->anggotaModel->where('id_keluarga', $idKeluarga)->where('is_head', 'Y')->first();
+
+            $data1 = [
+                'id_anggota' => $kepalaKeluarga['id_anggota'],
+                'is_head' => 'N'
+            ];
+
+            $data2 = [
+                'id_anggota' => $anggota['id_anggota'],
+                'is_head' => 'Y'
+            ];
+
+            $this->db->transStart();
+            $this->anggotaModel->update($data2['id_anggota'], $data2);
+            $this->anggotaModel->update($data1['id_anggota'], $data1);
+            $this->db->transComplete();
+
+            if ($this->db->transStatus() == false) {
+                session()->setflashdata('failed', 'Status kepala keluarga gagal diubah.');
+                return redirect()->to('/admin/keluarga/' . $anggota['id_keluarga']);
+            } elseif ($this->db->transStatus() == true) {
+                session()->setflashdata('success', 'Status kepala keluarga berhasil diubah.');
+                return redirect()->to('/admin/keluarga/' . $anggota['id_keluarga']);
+            }
         }
     }
 }

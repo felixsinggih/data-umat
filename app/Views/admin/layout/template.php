@@ -62,6 +62,11 @@
             margin-left: 0px;
             padding-bottom: 0px;
         }
+
+        a {
+            margin-bottom: 2px;
+            margin-top: 2px;
+        }
     </style>
 </head>
 
