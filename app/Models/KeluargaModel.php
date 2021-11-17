@@ -51,6 +51,27 @@ class KeluargaModel extends Model
         }
     }
 
+    public function viewAllByLingkungan($idLingkungan, $keyword)
+    {
+        if ($keyword) {
+            return $this
+                ->join('dsc_lingkungan as l', 'l.id_lingkungan = dsc_keluarga.id_lingkungan')
+                ->join('dsc_anggota_keluarga as ak', 'ak.id_keluarga = dsc_keluarga.id_keluarga')
+                ->where('ak.is_head', 'Y')
+                ->where('l.id_lingkungan', $idLingkungan)
+                ->groupStart()
+                ->like('dsc_keluarga.no_kk', $keyword)
+                ->orLike('ak.nik', $keyword)
+                ->orLike('ak.nama_lengkap', $keyword)
+                ->groupEnd();
+        } else {
+            return $this
+                ->join('dsc_lingkungan as l', 'l.id_lingkungan = dsc_keluarga.id_lingkungan')
+                ->join('dsc_anggota_keluarga as ak', 'ak.id_keluarga = dsc_keluarga.id_keluarga')
+                ->where('ak.is_head', 'Y')->where('l.id_lingkungan', $idLingkungan);
+        }
+    }
+
     public function dataKeluarga($idKeluarga)
     {
         return $this
@@ -58,6 +79,16 @@ class KeluargaModel extends Model
             ->join('dsc_anggota_keluarga as ak', 'ak.id_keluarga = dsc_keluarga.id_keluarga')
             ->where('ak.is_head', 'Y')
             ->like('dsc_keluarga.id_keluarga', $idKeluarga);
+    }
+
+    public function dataKeluargaByLingkungan($idLingkungan, $idKeluarga)
+    {
+        return $this
+            ->join('dsc_lingkungan as l', 'l.id_lingkungan = dsc_keluarga.id_lingkungan')
+            ->join('dsc_anggota_keluarga as ak', 'ak.id_keluarga = dsc_keluarga.id_keluarga')
+            ->where('ak.is_head', 'Y')
+            ->where('l.id_lingkungan', $idLingkungan)
+            ->where('dsc_keluarga.id_keluarga', $idKeluarga);
     }
 
     public function cekKkEdit($kk, $idKeluarga)

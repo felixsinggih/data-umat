@@ -112,8 +112,24 @@ $routes->group('/admin', ['filter' => 'authParoki'], function ($routes) {
 });
 
 // ** ADMIN LINGKUNGAN
-$routes->group('/adling', ['filter' => 'authLingkungan'], function ($routes) {
+$routes->group('/lingkungan', ['filter' => 'authLingkungan'], function ($routes) {
     $routes->get('', 'AdminLingkungan\Dashboard::index');
+
+    $routes->match(['get', 'post'], 'keluarga', 'AdminLingkungan\Keluarga::index');
+    $routes->get('keluarga/add', 'AdminLingkungan\Keluarga::add');
+    $routes->post('keluarga/save', 'AdminLingkungan\Keluarga::addData');
+    $routes->get('keluarga/(:segment)', 'AdminLingkungan\Keluarga::detail/$1');
+    $routes->get('keluarga/edit/(:segment)', 'AdminLingkungan\Keluarga::edit/$1');
+    $routes->post('keluarga/update/(:segment)', 'AdminLingkungan\Keluarga::editData/$1');
+
+    $routes->get('anggota/(:segment)', 'AdminLingkungan\Anggota::detail/$1');
+    $routes->get('anggota/add/(:segment)', 'AdminLingkungan\Anggota::add/$1');
+    $routes->post('anggota/save/(:segment)', 'AdminLingkungan\Anggota::addData/$1');
+    $routes->get('anggota/edit/(:segment)', 'AdminLingkungan\Anggota::edit/$1');
+    $routes->post('anggota/update/(:segment)', 'AdminLingkungan\Anggota::editData/$1');
+    $routes->delete('anggota/delete/(:segment)', 'AdminLingkungan\Anggota::delete/$1');
+
+    $routes->get('demografi', 'AdminLingkungan\Demografi::index');
 });
 
 /*

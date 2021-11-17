@@ -119,6 +119,37 @@
                 </p>
             </a>
         </li>
+        <li class="nav-item has-treeview<?= ($act[0] == 'keluarga') ? ' menu-open' : ''; ?>">
+            <a href="#" class="nav-link<?= ($act[0] == 'keluarga') ? ' active' : ''; ?>">
+                <i class="nav-icon fas fa-users"></i>
+                <p>Data Keluarga</p>
+                <i class="right fas fa-angle-left"></i>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/lingkungan/keluarga/add" class="nav-link<?= ($act[1] == 'tambah') ? ' active' : ''; ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tambah Data</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/lingkungan/keluarga" class="nav-link<?= ($act[1] == 'lihat') ? ' active' : ''; ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Data Keluarga</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="/lingkungan/demografi" class="nav-link<?= ($act[0] == 'demografi') ? ' active' : ''; ?>">
+                <i class="nav-icon fas fa-chart-bar"></i>
+                <p>
+                    Demografi Umat
+                </p>
+            </a>
+        </li>
     <?php endif; ?>
     <li class="nav-item">
         <a href="/signout" class="nav-link">

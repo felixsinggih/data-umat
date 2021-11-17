@@ -40,10 +40,21 @@
         }
 
         h4 {
-            font-size: 1rem;
-            margin: 0;
-            padding: 0;
+            font-family: inherit;
             display: inline-block;
+            font-weight: 700;
+            font-size: 1.75rem;
+            border: none;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        p {
+            font-size: 1.5rem;
+            line-height: 0;
+            margin: 0px;
+            padding: 0px;
+            border: none;
         }
 
         img {
@@ -72,20 +83,18 @@
         return $p[2] . ' ' . $bulan[(int)$p[1]] . ' ' . $p[0];
     }
 
-    $image = FCPATH . 'upload/profile.png';
+    $image = FCPATH . 'upload/img/' . $paroki['logo'];
     ?>
 </head>
 
 <body>
     <table>
         <tr>
-            <!-- <td rowspan="2"><img src="data:image/png;base64,<?= base64_encode(file_get_contents($image)) ?>" alt=""></td> -->
+            <td><img src="data:image/png;base64,<?= base64_encode(file_get_contents($image)) ?>" alt=""></td>
             <td>
-                <h4>DATA KELUARGA KATOLIK</h4>
+                <h4>DATA KELUARGA KATOLIK</h4><br />
+                PAROKI St. STEPHANUS CILACAP
             </td>
-        </tr>
-        <tr>
-            <td>PAROKI St. STEPHANUS CILACAP</td>
         </tr>
     </table>
     <hr />
@@ -95,22 +104,26 @@
         <table>
             <tbody align="left">
                 <tr>
-                    <th>Nama Kepala Keluarga</th>
-                    <td><?= $anggota[0]['nama_lengkap'] ?></td>
+                    <th>Nomor Kartu Keluarga</th>
+                    <td><?= $keluarga['no_kk'] ?></td>
+                    <th>Alamat</th>
+                    <td><?= $keluarga['alamat'] ?></td>
                     <th>Kecamatan</th>
                     <td><?= $keluarga['kecamatan'] ?></td>
                 </tr>
                 <tr>
-                    <th>Lingkungan / Stasi</th>
-                    <td><?= $lingkungan['nama'] ?></td>
                     <th>Nama Kepala Keluarga</th>
-                    <td><?= $keluarga['alamat'] ?></td>
+                    <td><?= $keluarga['nama_lengkap'] ?></td>
+                    <th>RT/RW</th>
+                    <td><?= $keluarga['rt_rw'] ?></td>
+                    <th>Telp</th>
+                    <td><?= $keluarga['telp'] ?></td>
                 </tr>
                 <tr>
+                    <th>Lingkungan / Stasi</th>
+                    <td><?= $keluarga['nama'] ?></td>
                     <th>Desa / Kelurahan</th>
                     <td><?= $keluarga['kelurahan'] ?></td>
-                    <th>Telp</th>
-                    <td><?= $anggota[0]['telp'] ?></td>
                 </tr>
             </tbody>
         </table>
@@ -124,9 +137,7 @@
                     <td rowspan="2">Nama Lengkap</td>
                     <td rowspan="2">L/P</td>
                     <td colspan="2">KELAHIRAN</td>
-                    <td rowspan="2">Status</td>
                     <td rowspan="2" style="width: 100px;">Status Dalam Keluarga</td>
-                    <td rowspan="2">Agama</td>
                     <td rowspan="2">Nama Orang Tua</td>
                     <td rowspan="2">Pendidikan</td>
                 </tr>
@@ -144,11 +155,20 @@
                         <td><?= ($data['jns_kelamin'] == 'Laki-laki') ? 'L' : 'P' ?></td>
                         <td><?= $data['tempat_lahir'] ?></td>
                         <td><?= tanggal($data['tgl_lahir']) ?></td>
-                        <td></td>
                         <td><?= $data['status_keluarga'] ?></td>
-                        <td></td>
                         <td align="left"><?= $data['ayah_kandung'] ?></td>
-                        <td><?= ($data['nama_pendidikan'] == 'Belum Sekolah') ? 'BS' : (($data['nama_pendidikan'] == 'Tidak Sekolah') ? 'TS' : $data['nama_pendidikan']) ?></td>
+                        <td><?php if (!empty($data['satuan_pendidikan'])) :
+                                echo $data['satuan_pendidikan'];
+                            else :
+                                if ($data['nama_pendidikan'] == 'Belum Sekolah') :
+                                    echo 'BS';
+                                elseif ($data['nama_pendidikan'] == 'Tidak Sekolah') :
+                                    echo 'TS';
+                                else :
+                                    echo $data['nama_pendidikan'];
+                                endif;
+                            endif ?>
+                        </td>
                     </tr>
                 <?php $i++;
                 endforeach; ?>
@@ -182,14 +202,14 @@
                 foreach ($anggota as $data) : ?>
                     <tr>
                         <td><?= $q ?></td>
-                        <td align="left"><?= (!empty($data['tempat_baptis'])) ? $data['tempat_baptis'] : '-' ?></td>
-                        <td><?= (!empty($data['tgl_baptis'])) ? tanggal($data['tgl_baptis']) : '-' ?></td>
-                        <td align="left"><?= (!empty($data['tempat_krisma'])) ? $data['tempat_krisma'] : '-' ?></td>
-                        <td><?= (!empty($data['tgl_krisma'])) ? tanggal($data['tgl_krisma']) : '-' ?></td>
-                        <td align="left"><?= (!empty($data['tempat_menikah'])) ? $data['tempat_menikah'] : '-' ?></td>
-                        <td><?= (!empty($data['tgl_menikah'])) ? tanggal($data['tgl_menikah']) : '-' ?></td>
+                        <td align="left"><?= (!empty($data['tempat_baptis'])) ? $data['tempat_baptis'] : '' ?></td>
+                        <td><?= (!empty($data['tgl_baptis'])) ? tanggal($data['tgl_baptis']) : '' ?></td>
+                        <td align="left"><?= (!empty($data['tempat_krisma'])) ? $data['tempat_krisma'] : '' ?></td>
+                        <td><?= (!empty($data['tgl_krisma'])) ? tanggal($data['tgl_krisma']) : '' ?></td>
+                        <td align="left"><?= (!empty($data['tempat_menikah'])) ? $data['tempat_menikah'] : '' ?></td>
+                        <td><?= (!empty($data['tgl_menikah'])) ? tanggal($data['tgl_menikah']) : '' ?></td>
                         <td><?= $data['gol_darah'] ?></td>
-                        <td></td>
+                        <td><?= ($data['nama_baptis'] != null || $data['tgl_baptis'] != null) ? 'Baptis' : '' ?></td>
                         <td><?= $data['nama_pekerjaan'] ?></td>
                     </tr>
                 <?php $q++;

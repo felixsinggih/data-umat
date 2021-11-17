@@ -48,7 +48,7 @@ class Login extends BaseController
                         $this->session->set('lingkungan', $lingkungan['id_lingkungan']);
 
                         session()->setflashdata('success', 'Selamat Datang, ' . session()->get('name'));
-                        return redirect()->to('/adling')->withInput();
+                        return redirect()->to('/lingkungan')->withInput();
                     }
                 } else {
                     session()->setflashdata('failed', 'Maaf, Status anda sudah Tidak Aktif');

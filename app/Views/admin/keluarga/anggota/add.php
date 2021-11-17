@@ -91,7 +91,7 @@
                 <div class="form-group row">
                     <label for="tgl_lahir" class="col-sm-3 col-form-label">Tanggal Lahir</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tgl_lahir')) ? 'is-invalid' : ''; ?>" id="tgl4" name="tgl_lahir" placeholder="YYYY-MM-DD" value="<?= old('tgl_lahir'); ?>">
+                        <input type="text" class="form-control <?= ($validation->hasError('tgl_lahir')) ? 'is-invalid' : ''; ?>" id="tgl4" name="tgl_lahir" placeholder="YYYY-MM-DD" value="<?= old('tgl_lahir'); ?>" readonly>
                         <div class="invalid-feedback">
                             <?= $validation->getError('tgl_lahir'); ?>
                         </div>
@@ -216,7 +216,7 @@
                 <div class="form-group row">
                     <label for="tgl_baptis" class="col-sm-3 col-form-label">Tanggal Baptis</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tgl_baptis')) ? 'is-invalid' : ''; ?>" id="tgl1" name="tgl_baptis" placeholder="YYYY-MM-DD" value="<?= old('tgl_baptis'); ?>">
+                        <input type="text" class="form-control <?= ($validation->hasError('tgl_baptis')) ? 'is-invalid' : ''; ?>" id="tgl1" name="tgl_baptis" placeholder="YYYY-MM-DD" value="<?= old('tgl_baptis'); ?>" readonly>
                         <div class="invalid-feedback">
                             <?= $validation->getError('tgl_baptis'); ?>
                         </div>
@@ -234,7 +234,7 @@
                 <div class="form-group row">
                     <label for="tgl_krisma" class="col-sm-3 col-form-label">Tanggal Krisma</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tgl_krisma')) ? 'is-invalid' : ''; ?>" id="tgl2" name="tgl_krisma" placeholder="YYYY-MM-DD" value="<?= old('tgl_krisma'); ?>">
+                        <input type="text" class="form-control <?= ($validation->hasError('tgl_krisma')) ? 'is-invalid' : ''; ?>" id="tgl2" name="tgl_krisma" placeholder="YYYY-MM-DD" value="<?= old('tgl_krisma'); ?>" readonly>
                         <div class="invalid-feedback">
                             <?= $validation->getError('tgl_krisma'); ?>
                         </div>
@@ -262,7 +262,7 @@
                 <div class="form-group row">
                     <label for="tgl_menikah" class="col-sm-3 col-form-label">Tanggal Menikah</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control <?= ($validation->hasError('tgl_menikah')) ? 'is-invalid' : ''; ?>" id="tgl3" name="tgl_menikah" placeholder="YYYY-MM-DD" value="<?= old('tgl_menikah'); ?>">
+                        <input type="text" class="form-control <?= ($validation->hasError('tgl_menikah')) ? 'is-invalid' : ''; ?>" id="tgl3" name="tgl_menikah" placeholder="YYYY-MM-DD" value="<?= old('tgl_menikah'); ?>" readonly>
                         <div class="invalid-feedback">
                             <?= $validation->getError('tgl_menikah'); ?>
                         </div>

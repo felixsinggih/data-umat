@@ -75,7 +75,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="<?= (session()->get('role') == 'Paroki') ? base_url('/admin') : base_url('adling') ?>" class="brand-link">
+            <a href="<?= (session()->get('role') == 'Paroki') ? base_url('/admin') : base_url('lingkungan') ?>" class="brand-link">
                 <img src="/upload/img/<?= session()->get('logoParoki') ?>" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Paroki Cilacap</span>
             </a>

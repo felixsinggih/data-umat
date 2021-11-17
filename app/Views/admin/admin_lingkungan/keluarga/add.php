@@ -1,7 +1,7 @@
 <?= $this->extend('admin/layout/template') ?>
 <?= $this->section('content') ?>
 
-<form action="/admin/keluarga/save" method="post">
+<form action="/lingkungan/keluarga/save" method="post">
     <?= csrf_field(); ?>
 
     <row>
@@ -10,18 +10,11 @@
                 <h3 class="card-title">Data Kaluarga</h3>
             </div>
             <div class="card-body pb-0">
+                <input type="hidden" name="id_lingkungan" value="<?= $lingkungan['id_lingkungan'] ?>">
                 <div class="form-group row">
-                    <label for="id_lingkungan" class="col-sm-3 col-form-label">Lingkungan / Stasi</label>
+                    <label class="col-sm-3 col-form-label">Lingkungan / Stasi</label>
                     <div class="col-sm-9">
-                        <select class="custom-select <?= ($validation->hasError('id_lingkungan')) ? 'is-invalid' : ''; ?>" id="id_lingkungan" name="id_lingkungan">
-                            <option value="" selected disabled>Pilih Lingkungan / Stasi</option>
-                            <?php foreach ($lingkungan as $data) : ?>
-                                <option value="<?= $data['id_lingkungan'] ?>"><?= $data['nama'] ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <div class="invalid-feedback">
-                            <?= $validation->getError('id_lingkungan'); ?>
-                        </div>
+                        <label class="col-form-label"><?= $lingkungan['nama'] ?></label>
                     </div>
                 </div>
                 <div class="form-group row">

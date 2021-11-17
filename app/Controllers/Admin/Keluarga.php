@@ -4,6 +4,8 @@ namespace app\Controllers\Admin;
 
 use App\Controllers\BaseController;
 
+use App\Models\ParokiModel;
+
 use App\Models\KeluargaModel;
 use App\Models\LingkunganModel;
 use App\Models\AnggotaModel;
@@ -23,6 +25,7 @@ use Dompdf\Dompdf;
 
 class Keluarga extends BaseController
 {
+    protected $parokiModel;
     protected $keluargaModel;
     protected $lingkunganModel;
     protected $anggotaModel;
@@ -37,9 +40,9 @@ class Keluarga extends BaseController
     protected $detAktivitasModel;
     protected $detKategorialModel;
 
-
     function __construct()
     {
+        $this->parokiModel = new ParokiModel();
         $this->keluargaModel = new KeluargaModel();
         $this->lingkunganModel = new LingkunganModel();
         $this->anggotaModel = new AnggotaModel();
@@ -373,17 +376,18 @@ class Keluarga extends BaseController
 
     public function print($idKeluarga = false)
     {
-        $keluarga = $this->keluargaModel->find($idKeluarga);
+        $keluarga = $this->keluargaModel->dataKeluarga($idKeluarga)->first();
         if (empty($keluarga)) {
             session()->setflashdata('failed', 'Data tidak ditemukan.');
             return redirect()->to('/admin/keluarga');
         }
 
         $data = [
-            'title'    => "Laporan Barang Masuk ",
+            'title'    => "Kartu Keluarga Katolik " . $keluarga['no_kk'],
+            'paroki'    => $this->parokiModel->find('1'),
             'keluarga' => $keluarga,
             'lingkungan' =>  $this->lingkunganModel->find($keluarga['id_lingkungan']),
-            'anggota' => $this->anggotaModel->dataAnggota($idKeluarga)->findAll(),
+            'anggota' => $this->anggotaModel->dataAnggota($idKeluarga),
         ];
 
         $fileName = "KartuKeluargaKatolik_" . $keluarga['no_kk'] . ".pdf";

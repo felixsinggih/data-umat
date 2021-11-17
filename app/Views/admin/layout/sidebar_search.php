@@ -1,4 +1,4 @@
-<form action="/admin/keluarga" method="post">
+<form action="<?= (session()->get('role') == 'Paroki') ? base_url('/admin/keluarga') : base_url('/lingkungan/keluarga') ?>" method="post">
     <?= csrf_field(); ?>
     <div class="input-group mb-3">
         <input type="search" class="form-control form-control-sidebar" placeholder="Pencarian" name="keyword" autocomplete="off">

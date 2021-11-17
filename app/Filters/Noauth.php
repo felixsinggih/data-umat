@@ -19,7 +19,7 @@ class Noauth implements FilterInterface
 
             if (session()->get('role') == 'Lingkungan') {
                 session()->setflashdata('success', 'Selamat Datang, ' . session()->get('name'));
-                return redirect()->to(base_url('adling'));
+                return redirect()->to(base_url('lingkungan'));
             }
         }
     }

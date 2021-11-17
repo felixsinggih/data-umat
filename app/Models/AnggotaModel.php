@@ -103,4 +103,11 @@ class AnggotaModel extends Model
         return $this->where('nik', $nik)
             ->where('id_anggota !=', $idAnggota);
     }
+
+    public function findAnggotaByLingkungan($idLingkungan, $idAnggota)
+    {
+        return $this->join('dsc_keluarga as k', 'k.id_keluarga = dsc_anggota_keluarga.id_keluarga')
+            ->where('k.id_lingkungan', $idLingkungan)
+            ->where('dsc_anggota_keluarga.id_anggota', $idAnggota);
+    }
 }
