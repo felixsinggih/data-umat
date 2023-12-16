@@ -134,6 +134,14 @@ $routes->group('/lingkungan', ['filter' => 'authLingkungan'], function ($routes)
     $routes->get('demografi', 'AdminLingkungan\Demografi::index');
 });
 
+$routes->group('/api', function ($routes) {
+    $routes->get('lingkungan', 'Api\Lingkungan::index');
+    $routes->post('lingkungan', 'Api\Lingkungan::create');
+    $routes->get('lingkungan/(:segment)', 'Api\Lingkungan::show/$1');
+    $routes->put('lingkungan/(:segment)', 'Api\Lingkungan::update/$1');
+    $routes->delete('lingkungan/(:segment)', 'Api\Lingkungan::delete/$1');
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
